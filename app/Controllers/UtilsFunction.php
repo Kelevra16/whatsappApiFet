@@ -110,7 +110,7 @@ class UtilsFunction extends BaseController
         $session = \Config\Services::session();
         $role = $session->get('role');
         
-        if($role > 1){
+        if($role > 2){
             $returnData = [
                 'status' => 200,
                 'message' => 'No tienes permisos para realizar esta acción',

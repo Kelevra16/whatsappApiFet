@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class GrupoDifucionModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'grupodifucion';
+    protected $table            = 'grupoDifucion';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;

@@ -76,7 +76,7 @@ class CampanaController extends BaseController
 
         $idUsuario = $session->get('idUser');
         $idEmpresa = $session->get('idEmpresa');
-        $token = $session->get('token');
+        $token = $session->get('tokenApi');
 
         if ($idUsuario == null || $idEmpresa == null) {
             $returnData = [
@@ -184,7 +184,7 @@ class CampanaController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        if($role <= 1){
+        if($role <= 2){
             $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->paginate(10,'default',$currentPage);
         }else{
             $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->where('created_by',$idUsuario)->paginate(10,'default',$currentPage);

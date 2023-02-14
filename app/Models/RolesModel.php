@@ -14,7 +14,7 @@ class RolesModel extends Model
     protected $returnType       = \App\Entities\RolesEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ["id","nombre","descripcion"];
+    protected $allowedFields    = ["id","nombre","descripcion","nivel"];
 
     // Dates
     protected $useTimestamps = false;

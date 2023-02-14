@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <?php if($user->id_rol <= 1){ ?>
+        <?php if($user->id_rol <= 2){ ?>
         <div class="row my-4">
             <div class="col">
                 <div id="cardqr" class="card d-none">

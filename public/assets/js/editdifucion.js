@@ -44,7 +44,7 @@ function getListDifucionInfo(cuPage = 1){
                 td1.colSpan = "1";
                 td1.classList.add('align-middle');
                 const h5 = document.createElement('h5');
-                h5.innerHTML = element.id;
+                h5.innerHTML = element.lada;
                 const td2 = document.createElement('td');
                 td2.colSpan = "1";
                 td2.classList.add('align-middle');

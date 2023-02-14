@@ -9,7 +9,8 @@ class RolesEntity extends Entity
     protected $datamap = [
         "id" => "",
         "nombre" => "",
-        "descripcion" => ""
+        "descripcion" => "",
+        "nivel" => ""
     ];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];
