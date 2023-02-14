@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #575757;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g id="UI_icon_bar_chart_light" data-name="UI icon/bar_chart/light">
+      <path id="Vector_606_Stroke_" data-name="Vector 606 (Stroke)" class="cls-1" d="M1,0c.55,0,1,.45,1,1V17c0,.55,.45,1,1,1H19c.55,0,1,.45,1,1s-.45,1-1,1H3c-1.66,0-3-1.34-3-3V1C0,.45,.45,0,1,0Z"/>
+      <path id="Vector_642_Stroke_" data-name="Vector 642 (Stroke)" class="cls-1" d="M5,6c.55,0,1,.45,1,1V15c0,.55-.45,1-1,1s-1-.45-1-1V7c0-.55,.45-1,1-1Z"/>
+      <path id="Vector_643_Stroke_" data-name="Vector 643 (Stroke)" class="cls-1" d="M9,12c.55,0,1,.45,1,1v2c0,.55-.45,1-1,1s-1-.45-1-1v-2c0-.55,.45-1,1-1Z"/>
+      <path id="Vector_644_Stroke_" data-name="Vector 644 (Stroke)" class="cls-1" d="M13,2c.55,0,1,.45,1,1V15c0,.55-.45,1-1,1s-1-.45-1-1V3c0-.55,.45-1,1-1Z"/>
+      <path id="Vector_645_Stroke_" data-name="Vector 645 (Stroke)" class="cls-1" d="M17,8c.55,0,1,.45,1,1v6c0,.55-.45,1-1,1s-1-.45-1-1v-6c0-.55,.45-1,1-1Z"/>
+    </g>
+  </g>
+</svg>

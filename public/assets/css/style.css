@@ -1,0 +1,287 @@
+body {
+    background-color: #ebebeb !important;
+}
+
+.text-black-grey {
+    color: #575757;
+}
+
+.text-grey-geo{
+    color: #B3B3B3 !important;
+}
+
+.text-blue-dart{
+    color: #3F4254;
+}
+
+.text-black-grey:hover {
+    color: #575757;
+}
+
+.animation-navbar {
+    transition: width 1s ease-in-out;
+}
+
+.svgFontSize {
+    height: 1.2rem;
+}
+
+.active-green {
+    background: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+}
+
+.btt-green-whatsApp{
+        background: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-color: #fff;
+            --bs-btn-bg: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-border-color: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-hover-border-color: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-active-border-color: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+            --bs-btn-disabled-border-color: linear-gradient(90deg, #2ABF1A 0.03%, #27A11A 100.03%) !important;
+}
+
+.btt-blue-send{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #1F4B84;
+    --bs-btn-border-color: #1F4B84;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #1F4B84;
+    --bs-btn-hover-border-color: #1F4B84;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #1F4B84;
+    --bs-btn-active-border-color: #1F4B84;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #1F4B84;
+    --bs-btn-disabled-border-color: #1F4B84;
+}
+
+.btt-blue-edit{
+    --bs-btn-color: #1F4B84;
+    --bs-btn-bg: #E1F0FF;
+    --bs-btn-border-color: #E1F0FF;
+    --bs-btn-hover-color: #1F4B84;
+    --bs-btn-hover-bg: #E1F0FF;
+    --bs-btn-hover-border-color: #E1F0FF;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #1F4B84;
+    --bs-btn-active-bg: #E1F0FF;
+    --bs-btn-active-border-color: #E1F0FF;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #1F4B84;
+    --bs-btn-disabled-bg: #E1F0FF;
+    --bs-btn-disabled-border-color: #E1F0FF;
+}
+
+.btt-green-circle{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #27A11A;
+    --bs-btn-border-color: #27A11A;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #27A11A;
+    --bs-btn-hover-border-color: #27A11A;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #27A11A;
+    --bs-btn-active-border-color: #27A11A;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #27A11A;
+    --bs-btn-disabled-border-color: #27A11A;
+    border-radius: 69px;
+}
+
+.btt-grey-circle{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #A2A2A2;
+    --bs-btn-border-color: #A2A2A2;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #A2A2A2;
+    --bs-btn-hover-border-color: #A2A2A2;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #A2A2A2;
+    --bs-btn-active-border-color: #A2A2A2;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #A2A2A2;
+    --bs-btn-disabled-border-color: #A2A2A2;
+    border-radius: 69px;
+}
+
+.btt-green-save{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #009577;
+    --bs-btn-border-color: #009577;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #009577;
+    --bs-btn-hover-border-color: #009577;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #009577;
+    --bs-btn-active-border-color: #009577;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #009577;
+    --bs-btn-disabled-border-color: #009577;
+}
+
+.btt-red-cancel{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #F4516C;
+    --bs-btn-border-color: #F4516C;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #F4516C;
+    --bs-btn-hover-border-color: #F4516C;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #F4516C;
+    --bs-btn-active-border-color: #F4516C;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #F4516C;
+    --bs-btn-disabled-border-color: #F4516C;
+}
+
+.active-green img {
+    filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(100deg) brightness(255%) contrast(100%) !important;
+}
+
+.btn-grey-bg {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #575757;
+    --bs-btn-border-color: #575757;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #575757;
+    --bs-btn-hover-border-color: #575757;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #575757;
+    --bs-btn-active-border-color: #575757;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #575757;
+    --bs-btn-disabled-border-color: #575757;
+    border-radius: 12px;
+}
+
+.btt-grey-normal{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #A2A2A2;
+    --bs-btn-border-color: #A2A2A2;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #A2A2A2;
+    --bs-btn-hover-border-color: #A2A2A2;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #A2A2A2;
+    --bs-btn-active-border-color: #A2A2A2;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #A2A2A2;
+    --bs-btn-disabled-border-color: #A2A2A2;
+}
+
+.truncate {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.imgCamping{
+    width: 45px;
+    height: 45px;
+    box-sizing: content-box;
+}
+
+.buttonBlueMax{
+    width: 151px;
+    max-width: 151px;
+    min-width: 151px;
+}
+
+/* Tamaño del scroll */
+*::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+   /* Estilos barra (thumb) de scroll */
+  *::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+  
+  *::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+  
+   /* Estilos track de scroll */
+  *::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+  }
+  
+  *::-webkit-scrollbar-track:hover, 
+  *::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+  }
+  
+
+  .shine {
+    background: #f6f7f8;
+    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-repeat: no-repeat;
+    background-size: 50% 100%; 
+    /* display: inline-block;
+    position: relative;  */
+    
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: forwards; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: placeholderShimmer;
+    -webkit-animation-timing-function: linear;
+    animation-duration: 1s;
+    animation-fill-mode: forwards; 
+    animation-iteration-count: infinite;
+    animation-name: placeholderShimmer;
+    animation-timing-function: linear;
+    }
+
+    @-webkit-keyframes placeholderShimmer {
+        0% {
+          background-position: -100% 0;
+        }
+        
+        100% {
+          background-position: 200% 0; 
+        }
+    }
+
+    @keyframes placeholderShimmer {
+        0% {
+          background-position: -100% 0;
+        }
+        
+        100% {
+          background-position: 200% 0; 
+        }
+    }
+      
+      

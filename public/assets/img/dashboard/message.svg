@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 18.73">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #575757;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g id="UI_icon_message" data-name="UI icon/message">
+      <path id="Vector_409_Stroke_" data-name="Vector 409 (Stroke)" class="cls-1" d="M5,6c0-.55,.45-1,1-1H14c.55,0,1,.45,1,1s-.45,1-1,1H6c-.55,0-1-.45-1-1Z"/>
+      <path id="Vector_410_Stroke_" data-name="Vector 410 (Stroke)" class="cls-1" d="M5,10c0-.55,.45-1,1-1h4c.55,0,1,.45,1,1s-.45,1-1,1H6c-.55,0-1-.45-1-1Z"/>
+      <path id="Rectangle_192_Stroke_" data-name="Rectangle 192 (Stroke)" class="cls-1" d="M4.72,14.46c.36-.3,.81-.46,1.28-.46h11c.55,0,1-.45,1-1V3c0-.55-.45-1-1-1H3c-.55,0-1,.45-1,1v13.73l2.72-2.27Zm1.28,1.54h11c1.66,0,3-1.34,3-3V3c0-1.66-1.34-3-3-3H3C1.34,0,0,1.34,0,3v13.73c0,1.7,1.98,2.62,3.28,1.54l2.72-2.27Z"/>
+    </g>
+  </g>
+</svg>

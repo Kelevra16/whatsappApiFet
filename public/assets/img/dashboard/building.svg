@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 19.16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #575757;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g id="UI_icon_building" data-name="UI icon/building">
+      <path id="Union" class="cls-1" d="M10.76,2.03l-6,1.5c-.45,.11-.76,.51-.76,.97v12.66H12V3c0-.65-.61-1.13-1.24-.97Zm3.24,5.13v10h2V8.16c0-.55-.45-1-1-1h-1Zm4,12h1c.55,0,1-.45,1-1s-.45-1-1-1h-1V8.16c0-1.66-1.34-3-3-3h-1V3c0-1.95-1.83-3.38-3.73-2.91L4.27,1.59c-1.34,.33-2.27,1.53-2.27,2.91v12.66H1c-.55,0-1,.45-1,1s.45,1,1,1H18Z"/>
+      <path id="Vector_511_Stroke_" data-name="Vector 511 (Stroke)" class="cls-1" d="M6,14.16c0-.55,.45-1,1-1h2c.55,0,1,.45,1,1s-.45,1-1,1h-2c-.55,0-1-.45-1-1Z"/>
+      <path id="Vector_512_Stroke_" data-name="Vector 512 (Stroke)" class="cls-1" d="M6,10.16c0-.55,.45-1,1-1h2c.55,0,1,.45,1,1s-.45,1-1,1h-2c-.55,0-1-.45-1-1Z"/>
+      <path id="Vector_513_Stroke_" data-name="Vector 513 (Stroke)" class="cls-1" d="M6,6.16c0-.55,.45-1,1-1h2c.55,0,1,.45,1,1s-.45,1-1,1h-2c-.55,0-1-.45-1-1Z"/>
+    </g>
+  </g>
+</svg>
