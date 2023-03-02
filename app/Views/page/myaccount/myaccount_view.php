@@ -54,13 +54,22 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <?php if($user->role <= 1){ ?>
+                                <div id="desvid" class="col-12 mt-3 row d-none">
+                                    <label for="company" class="form-label">Desvincular Numero</label>
+                                    <div class="" >
+                                        <button class="btn btt-red-cancel" onclick="unlinkAccount()">Desvincular</button>
+                                    </div>
+                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <?php if($user->id_rol <= 2){ ?>
+        <?php if($user->role <= 1){ ?>
         <div class="row my-4">
             <div class="col">
                 <div id="cardqr" class="card d-none">
@@ -135,5 +144,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/myaccount.js"></script>
+<script src="/assets/js/myaccount.js?v=1.0.1"></script>
 <?= $this->endSection() ?>

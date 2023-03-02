@@ -65,6 +65,7 @@ $routes->group('myaccount',function($routes){
 $routes->group('settings', function($routes) {
     $routes->post('state', 'UtilsFunction::getStateInstancia');
     $routes->post('qr', 'UtilsFunction::getQrImage');
+    $routes->post('unlinkaccount', 'UtilsFunction::unlinkAccount');
 });
 
 $routes->group('user', function($routes) {

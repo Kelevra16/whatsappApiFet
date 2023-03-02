@@ -20,6 +20,13 @@ function getState(){
                     estatusAlert = `<div class="alert alert-success" role="alert">
                         <strong>Atención!</strong> ${messageAlert}
                     </div>`;
+
+                    try{
+                      const desvid = document.getElementById('desvid');
+                      desvid.classList.remove('d-none');
+                    }catch(error){
+                      console.log(error);
+                    }
                 }else{
                     let messageAlert = "Cuenta inactiva";
                     estatusAlert = `<div class="alert alert-danger" role="alert">
@@ -206,6 +213,64 @@ function changePassword(){
                 const truck_modal = document.querySelector('#modalPass');
                 const modal = bootstrap.Modal.getInstance(truck_modal);    
                 modal.hide();
+            })
+          }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: result.message,
+                heightAuto: false,
+            })
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error',
+            heightAuto: false,
+            });
+        }
+      })
+      .catch(error => {
+        console.log('error', error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error',
+            heightAuto: false,
+        });
+      });
+}
+
+const unlinkAccount = () => {
+    Swal.fire({
+        title: 'Desvinculando cuenta...',
+        text: '',
+        timerProgressBar: true,
+        heightAuto: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      })
+
+      var requestOptions = {
+        method: 'POST',
+        redirect: 'follow'
+      };
+
+      fetch("/settings/unlinkaccount", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        if (result.status === 200) {
+          if (result.susses) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Cuenta desvinculada',
+                text: result.message,
+                heightAuto: false,
+            }).then((_) => {
+                window.location.href = "/myaccount";
             })
           }else{
             Swal.fire({
