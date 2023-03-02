@@ -17,7 +17,7 @@
                     <th scope="col">Titulo del mensaje</th>
                     <th scope="col">Fecha de publicación</th>
                     <th scope="col">Alcance</th>
-                    <th scope="col">Estatus</th>
+                    <th scope="col" class="text-center">Estatus</th>
                 </tr>
             </thead>
             <tbody id="bodyTableCampaign">

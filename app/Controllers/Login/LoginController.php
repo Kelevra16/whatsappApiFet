@@ -61,6 +61,9 @@ class LoginController extends BaseController
         $userModel = new \App\Models\UserModel();
         $user = $userModel->where('username', $username)->first();
 
+        $roleModel = new \App\Models\RolesModel();
+        $role = $roleModel->where('id', $user->id_rol)->first();
+
         if (!$user || !password_verify($password, $user->password)) {
             $returnData = [
                 'status' => 200,
@@ -77,7 +80,8 @@ class LoginController extends BaseController
         $ses_data = [
             'idUser' => $user->id,
             'username' => $user->username,
-            'role' => $user->id_rol,
+            'idrole' => $user->id_rol,
+            'role' => $role->nivel,
             'idEmpresa' => $user->id_empresa,
             'tokenApi' => $empresa->tokenApi,
             'logged_in' => TRUE

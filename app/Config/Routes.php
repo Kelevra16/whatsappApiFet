@@ -33,16 +33,19 @@ $routes->get('/', 'Login\LoginController::index');
 $routes->post('/login', 'Login\LoginController::login');
 $routes->get('/logout', 'Login\LoginController::logout');
 $routes->get('/viewfile/(:any)/(:any)', 'Home::fileView/$1/$2');
+$routes->post('/webhook', 'UtilsFunction::getAllrequestPOST');
 
 $routes->group('difusion', function($routes) {
     $routes->get('/', 'Difusion\DifusionController::index');
     $routes->post('listDifusion', 'Difusion\DifusionController::geListDifucion');
     $routes->post('listDifusion/(:num)', 'Difusion\DifusionController::geListDifucion/$1');
     $routes->post('createdXml', 'Difusion\DifusionController::createdListDifusionByFileXlsx');
+    $routes->post('createdlist', 'Difusion\DifusionController::createdListDifusion');
     $routes->get('created', 'Difusion\DifusionController::difusionCreated');
     $routes->get('edit/(:num)', 'Difusion\DifusionController::editListDifucion/$1');
     $routes->post('edit/list/(:num)', 'Difusion\DifusionController::getDataListDifucion/$1');
     $routes->post('edit/delte/contacto', 'Difusion\DifusionController::deleteContacto');
+    $routes->post('edit/add/contacto', 'Difusion\DifusionController::saveContacto');
 });
 
 
@@ -52,6 +55,7 @@ $routes->group('campaign', function($routes) {
     $routes->post('list', 'Campana\CampanaController::getListCampaign');
     $routes->post('list/(:num)', 'Campana\CampanaController::getListCampaign/$1');
     $routes->post('save', 'Campana\CampanaController::saveCampaign');
+    $routes->post('deleteCampaign', 'Campana\CampanaController::deleteCampaign');
 });
 
 $routes->group('myaccount',function($routes){
@@ -66,6 +70,28 @@ $routes->group('settings', function($routes) {
 $routes->group('user', function($routes) {
     $routes->post('update', 'Myaccount\MyAccountController::updateSelfUser');
     $routes->post('update/password', 'Myaccount\MyAccountController::updatePassword');
+});
+
+$routes->group('comandos', function($routes) {
+    $routes->get('/', 'Commands\CommandsController::index');
+});
+
+$routes->group('empresas', function($routes) {
+    $routes->get('/', 'Empresas\EmpresasController::index');
+    $routes->post('list', 'Empresas\EmpresasController::getListEmpresas');
+    $routes->post('list/(:num)', 'Empresas\EmpresasController::getListEmpresas/$1');
+    $routes->get('new', 'Empresas\EmpresasController::createdEmpresa');
+    $routes->post('save', 'Empresas\EmpresasController::saveEmpresa');
+    $routes->post('delete', 'Empresas\EmpresasController::deleteEmpresa');
+});
+
+$routes->group('usuarios', function($routes) {
+    $routes->get('/', 'Usuarios\UsuariosController::index');
+    $routes->post('list', 'Usuarios\UsuariosController::getListUser');
+    $routes->post('list/(:num)', 'Usuarios\UsuariosController::getListUser/$1');
+    $routes->get('new', 'Usuarios\UsuariosController::newUser');
+    $routes->post('save', 'Usuarios\UsuariosController::saveUser');
+    $routes->post('delete', 'Usuarios\UsuariosController::deleteUser');
 });
 
 /*

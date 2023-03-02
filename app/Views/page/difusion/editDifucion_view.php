@@ -6,7 +6,7 @@
     <div class="card-body px-4 pt-4 mt-2 mx-2">
         <div class="card-title d-flex justify-content-between align-items-center">
             <h5 class="">Editar lista de difusión</h5>
-            <a href="#" disabled class="btn btt-green-whatsApp disabled"> Agregar Contacto</a>
+            <button data-bs-toggle="modal" data-bs-target="#contactoModal" class="btn btt-green-whatsApp"> Agregar Contacto</button>
         </div>
     </div>
 
@@ -80,8 +80,51 @@
     <input type="hidden" id="idDifucion" value="<?php echo $idDifusion ?>">
 </div>
 
+<div class="modal fade" id="contactoModal" tabindex="-1" aria-labelledby="contactoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="contactoModalLabel">Nuevo Contacto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row needs-validation" novalidate>
+          <div class="col-12 mb-3">
+            <label for="nombre" class="col-form-label">Nombre:</label>
+            <input type="text" require class="form-control" id="nombre" name="nombre">
+          </div>
+          <div class="col-4 mb-3">
+            <label for="lada" class="col-form-label">lada:</label>
+            <input type="tel" min="1" require class="form-control" id="lada" name="lada" pattern="[0-9]{2}|[0-9]{3}">
+          </div>
+          <div class="col-8 mb-3">
+            <label for="telefono" class="col-form-label">Teléfono:</label>
+             <input type="tel" require class="form-control" id="telefono" name="telefono" pattern="[0-9]{10}">
+          </div>
+          <div class="col-12 mb-3">
+            <label for="empresa" class="col-form-label">Empresa:</label>
+             <input type="text" require class="form-control" id="empresa" name="empresa">
+          </div>
+          <div class="col-12 mb-3">
+            <label for="puesto" class="col-form-label">Puesto:</label>
+             <input type="text" require class="form-control" id="puesto" name="puesto">
+          </div>
+          <div class="col-12 mb-3">
+            <label for="email" class="col-form-label">Correo:</label>
+             <input type="email" require class="form-control" id="email" name="email">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btt-red-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btt-green-whatsApp" onclick="saveContacto()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/editdifucion.js?v=1.0.2"></script>
+<script src="/assets/js/editdifucion.js?v=1.0.4"></script>
 <?= $this->endSection() ?>

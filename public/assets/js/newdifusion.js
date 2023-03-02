@@ -35,17 +35,19 @@ function saveDifusion(){
         },
     });
 
-    let titulo = document.getElementById('titleDifusion').value;
-    let descripcion = document.getElementById('description').value;
-    let location = document.getElementById('location').value;
-    let excel = document.getElementById('excel').files[0];
+    let titulo = document.getElementById('titleDifusion');
+    let descripcion = document.getElementById('description');
+    let location = document.getElementById('location');
+    let excel = document.getElementById('excel');
+    const noarchiveCheckboxes = document.getElementById('noarchive');
 
 
     var formdata = new FormData();
-    formdata.append("titulo", titulo);
-    formdata.append("descripcion",descripcion);
-    formdata.append("excel", excel);
-    formdata.append("location",location);
+    formdata.append("titulo", titulo.value);
+    formdata.append("descripcion",descripcion.value);
+    formdata.append("excel", excel.files[0]);
+    formdata.append("location",location.value);
+    const url = (noarchiveCheckboxes.checked)? '/difusion/createdlist' : "/difusion/createdXml";
 
     var requestOptions = {
       method: 'POST',
@@ -53,7 +55,7 @@ function saveDifusion(){
       redirect: 'follow'
     };
 
-    fetch("/difusion/createdXml", requestOptions)
+    fetch(url, requestOptions)
       .then(response => response.json())
       .then(result => {
         console.log(result);
@@ -62,7 +64,10 @@ function saveDifusion(){
                 icon: 'success',
                 title: 'Lista de difusión creada',
                 showConfirmButton: true,
-              })
+              }).then((result) => {
+                window.location.href = '/difusion/created';
+              });
+            
         }else{
             let mssg = (result.message)? result.message : 'Sucedió un error, Inténtalo mas tarde';
             Swal.fire({
@@ -81,5 +86,21 @@ function saveDifusion(){
         });
       });
 
+
+}
+
+
+const noArchive = () => {
+    const noarchiveCheckboxes = document.getElementById('noarchive');
+
+    if(noarchiveCheckboxes.checked){
+        document.getElementById('excel').disabled = true;
+        document.getElementById('lbImgArchive').classList.add('disabled');
+        document.getElementById('nameArchiveSelect').classList.add('d-none');
+        document.getElementById('resetImg').classList.add('d-none');
+    }else{
+        document.getElementById('excel').disabled = false;
+        document.getElementById('lbImgArchive').classList.remove('disabled');
+    }
 
 }

@@ -22,6 +22,27 @@
                                 <img class="svgFontSize" src="/assets/img/dashboard/building.svg" alt="building"> <span class="ms-1 d-none d-lg-inline">Lista de difusión</span></a>
                         </li>
 
+                        <?php if ($session->get("role") == 0){ ?>
+                            <li class="nav-item col-12 my-1">
+                                <a href="/empresas" class="nav-link <?php echo ($section === 'empresas')? "active-green":"" ?> align-middle text-black-grey">
+                                <i class="bi bi-building-fill"></i> <span class="ms-1 d-none d-lg-inline">Empresas</span></a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if ($session->get("role") == 0 || $session->get("role") == 1){ ?>
+                            <li class="nav-item col-12 my-1">
+                                <a href="/usuarios" class="nav-link <?php echo ($section === 'usuarios')? "active-green":"" ?> align-middle text-black-grey">
+                                <i class="bi bi-person-circle"></i> <span class="ms-1 d-none d-lg-inline">Usuarios</span></a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if ($session->get("role") == 0){ ?>
+                            <li class="nav-item col-12 my-1">
+                                <a href="/comandos" class="nav-link <?php echo ($section === 'comandos')? "active-green":"" ?> align-middle text-black-grey">
+                                <i class="bi bi-terminal"></i> <span class="ms-1 d-none d-lg-inline">Comandos</span></a>
+                            </li>
+                        <?php } ?>
+
                         <!-- <li class="nav-item col-12 my-1">
                             <a href="#" class="nav-link align-middle text-black-grey">
                                 <img class="svgFontSize" src="/assets/img/dashboard/bar_chart.svg" alt="barChar"> <span class="ms-1 d-none d-lg-inline">Estadísticas</span> </a>

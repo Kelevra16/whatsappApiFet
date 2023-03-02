@@ -14,7 +14,7 @@ class EmpresaModel extends Model
     protected $returnType       = \App\Entities\EmpresaEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ["nombre","direccion","descripcion","telefono","tokenApi","logo","primaryColor","secondaryColor"];
 
     // Dates
     protected $useTimestamps = false;

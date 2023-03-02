@@ -14,7 +14,7 @@ class CampanaController extends BaseController
 {
     private $url = "https://api.whatzmeapi.com/";
     private $sendMessage = "own/enviar-mensaje-muchos-contactos";
-    private $sendArchive = "own/enviar-muchos-archivos-muchos-contactos";
+    private $sendArchive = "own/enviar-archivo-muchos-contactos";
 
 
     public function index()
@@ -184,7 +184,7 @@ class CampanaController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        if($role <= 2){
+        if($role <= 1){
             $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->paginate(10,'default',$currentPage);
         }else{
             $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->where('created_by',$idUsuario)->paginate(10,'default',$currentPage);
@@ -254,19 +254,19 @@ class CampanaController extends BaseController
         return $arrayContactos;
     }
 
-    private function sendWhatsAppWithFiles(\App\Entities\CampaignEntity $data, $contactos, $name, $token)
+    private function sendWhatsAppWithFiles($data, $contactos, $name, $token)
     {    
-        $urlArchivo = base_url($data->adjunto);
+        $urlArchivo = base_url()."/".$data->adjunto;
         $urlSend = $this->url . $this->sendArchive . '?token=' . $token;
         $arrayContacto = $this->arrayContactos($contactos);
         $curl = curl_init();
-        $dataSend = [
-            'numeros' =>$arrayContacto,
-            'url' => $urlArchivo,
-            'nombrearchivo' => $name,
-            'textoimagen' => $data->mensaje,
+        $dataSend = array(
+            "numeros" =>$arrayContacto,
+            "url" => $urlArchivo,
+            "nombrearchivo" => $name,
+            "textoimagen" => $data->mensaje,
             "nombreCampania" => $data->titulo
-        ];
+        );
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => $urlSend,
@@ -277,14 +277,16 @@ class CampanaController extends BaseController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($dataSend),
+            CURLOPT_POSTFIELDS => json_encode($dataSend,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'
-              ),
+              )
         ));
 
         $response = curl_exec($curl);
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        log_message("error",$response);
 
         if (!curl_errno($curl)){
             switch ($status){
@@ -305,10 +307,14 @@ class CampanaController extends BaseController
 
     }
 
-    private function sendWhatsAppOnlyText(\App\Entities\CampaignEntity $data, $contactos,$token)
+    private function sendWhatsAppOnlyText($data, $contactos,$token)
     {
         $urlSend = $this->url . $this->sendMessage . '?token=' . $token;
         $arrayContacto = $this->arrayContactos($contactos);
+        $dataSend = [
+            'numeros' =>$arrayContacto,
+            'mensaje' => $data->mensaje,
+        ];
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $urlSend,
@@ -319,11 +325,7 @@ class CampanaController extends BaseController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => [
-                'numeros' =>$arrayContacto,
-                'mensaje' => $data->mensaje,
-                "nombreCampania" => $data->titulo
-            ],
+            CURLOPT_POSTFIELDS => json_encode($dataSend,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'
               ),
@@ -349,4 +351,41 @@ class CampanaController extends BaseController
             }
         }
     }
+
+    public function deleteCampaign()
+    {   
+        $session = \Config\Services::session();
+        $idEmpresa = $session->get('idEmpresa');
+        $idUsuario = $session->get('idUser');
+        $idCampaign = $this->request->getVar('idCampaign');
+        $role = $this->request->getVar('role');
+
+        $campaignModel = new \App\Models\CampaignModel();
+
+        if($role <= 1){
+            $campaign = $campaignModel->where('id_empresa',$idEmpresa)->where('id',$idCampaign)->first();
+        }else{
+            $campaign = $campaignModel->where('id_empresa',$idEmpresa)->where('id',$idCampaign)->where('created_by',$idUsuario)->first();
+        }
+
+        if($campaign){
+            $campaignModel->delete($idCampaign);
+            $returnData = [
+                'status' => 200,
+                'message' => 'Campaña eliminada con éxito',
+                'susses' => true,
+                'data' => []
+            ];
+            return $this->response->setJSON($returnData);
+        }else{
+            $returnData = [
+                'status' => 400,
+                'message' => 'No se encontró la campaña',
+                'susses' => false,
+                'data' => []
+            ];
+            return $this->response->setJSON($returnData);
+        }
+    }
+
 }

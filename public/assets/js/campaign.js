@@ -55,10 +55,15 @@ function getListCampaign(cuPage = 1){
                     span4.classList.add('fw-normal');
                     span4.innerHTML = ' Mensajes abiertos';
                     const td4 = document.createElement('td');
-                    td4.classList.add('align-middle');
+                    td4.classList.add('align-middle','text-center');
                     const button2 = document.createElement('button');
-                    button2.classList.add('btn', 'btt-green-circle');
+                    button2.classList.add('btn', 'btt-green-circle','mx-1');
                     button2.innerHTML = element.status;
+
+                    const button3 = document.createElement('button');
+                    button3.classList.add('btn', 'btt-red-cancel-circle');
+                    button3.innerHTML = "Eliminar";
+                    button3.setAttribute('onclick', 'deleteCampaign(' + element.id + ')');
 
                     bodyTableCampaign.appendChild(tr);
                     tr.appendChild(td1);
@@ -75,6 +80,7 @@ function getListCampaign(cuPage = 1){
                     div3.appendChild(span4);
                     tr.appendChild(td4);
                     td4.appendChild(button2);
+                    td4.appendChild(button3);
                 });
 
                 currentPage = cuPage;
@@ -256,4 +262,68 @@ const paginate = (pagesMax, selector) => {
     `
 
     document.querySelector(selector).innerHTML = html
+}
+
+
+function deleteCampaign(idCampaign){
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esta acción",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#27A11A',
+        cancelButtonColor: '#F4516C',
+        confirmButtonText: 'Si, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Eliminando...',
+                text: 'Espere un momento',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("idCampaign", idCampaign);
+      
+            var requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              body: urlencoded,
+              redirect: 'follow'
+            };
+      
+            fetch("/campaign/deleteCampaign", requestOptions)
+              .then(response => response.json())
+              .then(result => {
+                if (result.status == 200 && result.susses) {
+                  Swal.fire(
+                    'Eliminado!',
+                    'La campaña ha sido eliminada.',
+                    'success'
+                  );
+                  getListCampaign(currentPage);
+                }else{
+                  Swal.fire(
+                    'Error!',
+                    'Ha ocurrido un error.',
+                    'error'
+                  );
+                }
+              })
+                .catch(error => {
+                    console.log('error', error);
+                    Swal.fire(
+                        'Error!',
+                        'Ha ocurrido un error.',
+                        'error'
+                    )
+                });
+        }
+    })
 }

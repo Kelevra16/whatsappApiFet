@@ -24,7 +24,7 @@ function saveGroupSelect(){
     ElementChecked = [];
     CheckedGroups.push(...tempCheckedGroups);
     ElementChecked.push(...tempNameElementChecked);
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const dropdownMenu = document.querySelector('.dropdownMenuButton1');
     dropdownMenu.classList.remove("show");
     const drowMenuInput = document.getElementById('dropdownMenuButton');
     ElementCheckedString = ElementChecked.join(', ');
@@ -44,7 +44,7 @@ function deselectTempGroup(){
 
 function cancelGroupSelect(){
     deselectTempGroup();
-    const dropdownMenuButton = document.querySelector('.dropdown-menu');
+    const dropdownMenuButton = document.querySelector('.dropdownMenuButton1');
     dropdownMenuButton.classList.remove("show");
     tempCheckedGroups = [];
     tempNameElementChecked = [];
@@ -130,13 +130,15 @@ function sendCanpaing(){
     fetch("/campaign/save", requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        // console.log(result)
             if(result.susses){
                 Swal.fire({
                     icon: 'success',
                     title: 'Campaña enviada',
                     showConfirmButton: true,
-                  })
+                  }).then((result) => {
+                    window.location.href = '/campaign/new';
+                  });
             }else{
                 let mssg = (result.message)? result.message : 'Sucedió un error, Inténtalo mas tarde';
                 Swal.fire({
@@ -147,7 +149,7 @@ function sendCanpaing(){
             }
       })
       .catch(error => {
-        console.log('error', error)
+        // console.log('error', error)
         Swal.fire({
             icon: 'error',
             title: 'Oops...',

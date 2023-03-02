@@ -12,7 +12,7 @@ class MyAccountController extends BaseController
 
         $idUser = $session->get('idUser');
         $idEmpresa = $session->get('idEmpresa');
-        $role = $session->get('role');
+        $idRole = $session->get('idrole');
 
         $userModel = new \App\Models\UserModel();
         $user = $userModel->where('id', $idUser)->first();
@@ -21,7 +21,7 @@ class MyAccountController extends BaseController
         $empresa = $empresaModel->where('id', $idEmpresa)->first();
 
         $roles = new \App\Models\RolesModel();
-        $roles = $roles->where('id', $role)->first();
+        $roles = $roles->where('id', $idRole)->first();
 
         $data = [
             'title' => 'Mi cuenta',

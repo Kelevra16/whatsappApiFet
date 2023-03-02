@@ -11,6 +11,9 @@ class ContactosEntity extends Entity
         'telefono'          =>  "",
         'lada'              =>  "",
         'nombre'            =>  "",
+        'empresa'           =>  "",
+        'puesto'            =>  "",
+        'email'             =>  "",
         'id_grupoDifucion'  =>  "",
         'created_by'        =>  ""
     ];

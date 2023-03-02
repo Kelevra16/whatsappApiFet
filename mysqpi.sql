@@ -25,7 +25,7 @@ CREATE TABLE empresas (
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     aPaterno VARCHAR(100) NOT NULL,
@@ -61,6 +61,9 @@ CREATE TABLE contactos (
     telefono VARCHAR(15) NOT NULL,
     lada VARCHAR(5) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
+    empresa VARCHAR(100),
+    puesto VARCHAR(100),
+    email VARCHAR(100),
     id_grupoDifucion INT NOT NULL,
     created_by INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -98,4 +101,17 @@ CREATE TABLE responseApi (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL DEFAULT NULL
+);
+
+CREATE TABLE commandProgram (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    typeCommand enum('Suscribir','Desuscribirse','Texto','Imagen') NOT NULL,
+    id_empresa INT NOT NULL,
+    command TEXT NOT NULL,
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL
+    FOREIGN KEY (id_empresa) REFERENCES empresas(id)
+    FOREIGN KEY (created_by) REFERENCES usuarios(id)
 );

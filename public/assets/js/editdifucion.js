@@ -293,3 +293,84 @@ const paginate = (pagesMax, selector) => {
 
 
   }
+
+const saveContacto = () => {
+    Swal.fire({
+        title: 'Creando nuevo contacto...',
+        text: '',
+        timerProgressBar: true,
+        heightAuto: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+    });
+
+    const nombre = document.getElementById('nombre');
+    const lada = document.getElementById('lada');
+    const telefono = document.getElementById('telefono');
+    const empresa = document.getElementById('empresa');
+    const puesto = document.getElementById('puesto');
+    const email = document.getElementById('email');
+    const idDifucion = document.getElementById('idDifucion');
+    // const id = document.getElementById('id');
+
+    if (nombre.value == '' || telefono.value == '' || lada.value == '') {
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '¡Los campos nombre,teléfono y lada son requeridos!',
+        });
+        return false;
+    }
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("nombre", nombre.value);
+    urlencoded.append("lada", lada.value);
+    urlencoded.append("telefono", telefono.value);
+    urlencoded.append("empresa", empresa.value);
+    urlencoded.append("puesto", puesto.value);
+    urlencoded.append("email", email.value);
+    urlencoded.append("idDifucion", idDifucion.value);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow',
+        body: urlencoded
+    };
+
+    fetch("/difusion/edit/add/contacto", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if (result.status == 200 && result.susses == true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: '¡El contacto se ha agregado correctamente!',
+                });
+                getListDifucionInfo(currentPage);
+                nombre.value = '';
+                lada.value = '';
+                telefono.value = '';
+                empresa.value = '';
+                puesto.value = '';
+                email.value = '';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: '¡Ha ocurrido un error al agregar el contacto!',
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '¡Ha ocurrido un error al agregar el contacto!',
+            });
+        });
+}

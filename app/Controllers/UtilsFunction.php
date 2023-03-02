@@ -110,7 +110,7 @@ class UtilsFunction extends BaseController
         $session = \Config\Services::session();
         $role = $session->get('role');
         
-        if($role > 2){
+        if($role > 1){
             $returnData = [
                 'status' => 200,
                 'message' => 'No tienes permisos para realizar esta acción',
@@ -187,5 +187,20 @@ class UtilsFunction extends BaseController
         // }
 
         return $response;
+    }
+
+    public function getAllrequestPOST(){
+
+        $request = \Config\Services::request();
+
+        $posts = $request->getJSON();
+
+        if(!$posts){
+            log_message('alert','No se recibieron datos por POST');
+        }
+
+        $postString = json_encode($posts);
+
+        log_message('alert','POST: '.$postString);
     }
 }

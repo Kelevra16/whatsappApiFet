@@ -9,11 +9,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Seleccionar lista de difusión</h5>
-                        <input class="form-control dropdown-toggle" type="text" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 500px;">
+                        <input class="form-control dropdown-toggle" type="text" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <div class="dropdown-menu dropdownMenuButton1" aria-labelledby="dropdownMenuButton1" style="min-width: 500px;">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <ul class="list-group" id="groupListDifu" aria-labelledby="dropdownMenuButton" style="max-height: 400px; overflow:auto;">
+                                    <ul class="list-group" id="groupListDifu" aria-labelledby="dropdownMenuButton1" style="max-height: 400px; overflow:auto;">
                                         <li class="list-group-item py-3" style="border:none">
                                             <input class="form-check-input me-1" type="checkbox" value="123" data-name="First checkbox" id="firstCheckbox" onchange="checkGroup(this);">
                                             <label class="form-check-label" for="firstCheckbox">First checkbox</label>

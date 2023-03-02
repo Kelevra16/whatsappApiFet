@@ -48,6 +48,12 @@
                     <div class="card-body">
                         <h6>Archivo a subir</h6>
                         <p>Selecciona el archivo en formato xlxs con los contactos a subir</p>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="noarchive" name="noarchive" onchange="noArchive()">
+                              <label class="form-check-label" for="noarchive">
+                                crear difusión vacía
+                              </label>
+                            </div>
                         <div class="d-grid gap-2 d-flex justify-content-end pt-3">
                             <div>
                                 <button id="resetImg" class="btn px-4 btt-red-cancel d-none" onclick="resetArchive();">Borrar</button>
