@@ -60,7 +60,12 @@
                                             <?php endforeach; ?>
                                         </select>
                                     <?php else: ?>
-                                        <input class="form-control" type="text" id="idEmpresa" name="idEmpresa" value="<?= $session->idEmpresa ?>" readonly></input>
+                                        <select class="form-select" aria-label="Default select example" id="idEmpresa" name="idEmpresa">
+                                            <option selected>Selecciona una empresa</option>
+                                            <?php foreach($empresas as $empresa): ?>
+                                                <option value="<?= $empresa->id ?>"><?= $empresa->nombre ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-12 mt-3">
