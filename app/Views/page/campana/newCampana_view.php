@@ -132,5 +132,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/newcampana.js"></script>
+<script src="/assets/js/newcampana.js?v=1.0.1"></script>
 <?= $this->endSection() ?>

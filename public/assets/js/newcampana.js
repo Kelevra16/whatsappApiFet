@@ -26,7 +26,7 @@ function saveGroupSelect(){
     ElementChecked.push(...tempNameElementChecked);
     const dropdownMenu = document.querySelector('.dropdownMenuButton1');
     dropdownMenu.classList.remove("show");
-    const drowMenuInput = document.getElementById('dropdownMenuButton');
+    const drowMenuInput = document.getElementById('dropdownMenuButton1');
     ElementCheckedString = ElementChecked.join(', ');
     drowMenuInput.value = ElementCheckedString;
 }
