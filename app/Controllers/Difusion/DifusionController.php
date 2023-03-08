@@ -67,7 +67,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Los campos titulo, descripción y ubicación son requeridos',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -86,7 +86,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'El archivo es requerido',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -96,7 +96,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al subir el archivo',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -106,7 +106,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al mover el archivo',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -121,7 +121,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Ya existe una lista con ese nombre',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -148,7 +148,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al crear la lista de difusion',
-                'susses' => true,
+                'susses' => false,
                 'url' => '',
             ];
             return $this->response->setJSON($returnData);

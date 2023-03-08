@@ -61,9 +61,6 @@ class LoginController extends BaseController
         $userModel = new \App\Models\UserModel();
         $user = $userModel->where('username', $username)->first();
 
-        $roleModel = new \App\Models\RolesModel();
-        $role = $roleModel->where('id', $user->id_rol)->first();
-
         if (!$user || !password_verify($password, $user->password)) {
             $returnData = [
                 'status' => 200,
@@ -74,6 +71,9 @@ class LoginController extends BaseController
             $this->session->destroy();
             return $this->response->setJSON($returnData);
         }
+
+        $roleModel = new \App\Models\RolesModel();
+        $role = $roleModel->where('id', $user->id_rol)->first();
 
         $empresaModel = new \App\Models\EmpresaModel();
         $empresa = $empresaModel->where('id', $user->id_empresa)->first();
