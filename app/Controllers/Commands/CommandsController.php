@@ -115,7 +115,7 @@ class CommandsController extends BaseController
         if(!$grupoDifucion){
             $message = "No se encontró el grupo de difusión";
             log_message('alert','No se encontró el grupo de difusión');
-            // $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+            $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
             return;
         }
 
@@ -125,7 +125,7 @@ class CommandsController extends BaseController
         if($contact){
             $message = "Ya te encuentras Suscrito";
             log_message('alert',"Ya te encuentras Suscrito");
-            // $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+            $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
             return;
         }
 
@@ -142,7 +142,7 @@ class CommandsController extends BaseController
 
         $message = $action->message;
         log_message('alert',"suscrito correctamente " . $message);
-        // $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+        $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
         return;
     }
 
