@@ -18,12 +18,18 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">Creado Por</th>
                     <th scope="col">Fecha de Creación</th>
+                    <th scope="col">Acción</th>
                 </tr>
             </thead>
-            <tbody id="bodyTableCampaign">
+            <tbody id="bodyTableCommand">
 
             <?php for ($i=0; $i < 5; $i++) { ?>
                 <tr scope="row" >
+                    <td colspan="1">
+                        <div class="row gx-3">
+                            <div class="rounded-3 col shine me-1"  style="height: 30px; width: 150px;"></div>
+                        </div>
+                    </td>
                     <td colspan="1">
                         <div class="row gx-3">
                             <div class="rounded-3 col shine me-1"  style="height: 30px; width: 150px;"></div>
@@ -57,5 +63,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/command.js"></script>
+<script src="/assets/js/command.js?v=1.0.0"></script>
 <?= $this->endSection() ?>

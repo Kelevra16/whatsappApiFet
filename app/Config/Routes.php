@@ -34,6 +34,7 @@ $routes->post('/login', 'Login\LoginController::login');
 $routes->get('/logout', 'Login\LoginController::logout');
 $routes->get('/viewfile/(:any)/(:any)', 'Home::fileView/$1/$2');
 $routes->post('/webhook', 'UtilsFunction::getAllrequestPOST');
+$routes->post('/webhook/(:any)', 'Commands\CommandsController::commandAction/$1');
 
 $routes->group('difusion', function($routes) {
     $routes->get('/', 'Difusion\DifusionController::index');
@@ -75,6 +76,11 @@ $routes->group('user', function($routes) {
 
 $routes->group('comandos', function($routes) {
     $routes->get('/', 'Commands\CommandsController::index');
+    $routes->post('list', 'Commands\CommandsController::getListCommands');
+    $routes->post('list/(:num)', 'Commands\CommandsController::getListCommands/$1');
+    // $routes->post('save', 'Commands\CommandsController::saveDashboard');
+    $routes->post('delete', 'Commands\CommandsController::deleteCommand');
+    $routes->get('new', 'Commands\CommandsController::newCommand');
 });
 
 $routes->group('empresas', function($routes) {
