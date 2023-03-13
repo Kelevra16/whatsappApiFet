@@ -86,6 +86,9 @@ class CommandsController extends BaseController
             return;
         }
 
+        $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
+        log_message('alert','mensaje de comando: '.$postString);
+
         switch ($command->typeCommand) {
             case 'Suscribir':
                 $telefonoCompleto = $posts->user->phone;
