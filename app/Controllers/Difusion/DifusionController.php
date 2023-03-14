@@ -158,15 +158,23 @@ class DifusionController extends BaseController
 
         $data = [];
         $total = 0;
+        $error = "";
         foreach ($sheetData as $key => $value) {
             if ($key > 0) {
+
+                if (!isset($value[0]) && !isset($value[1]) && !isset($value[2])) {
+                    $error = "Hay campos vacíos que serán omitidos";
+                    continue;
+                }
+
                 if(!is_numeric($value[1]) || !is_numeric($value[0])){
+                    $error = "Hay campos que no son números que serán omitidos";
                     continue;
                 }
                 
                 $contactoEntity = new \App\Entities\ContactosEntity();
-                $contactoEntity->telefono = $value[1];
-                $contactoEntity->lada = $value[0];
+                $contactoEntity->telefono = str_replace(' ', '', $value[1]);
+                $contactoEntity->lada = str_replace(' ', '', $value[0]);
                 $contactoEntity->nombre = $value[2];
                 $contactoEntity->empresa = (isset($value[3]))?$value[3]:"";
                 $contactoEntity->puesto = (isset($value[4]))?$value[4]:"";
@@ -197,6 +205,7 @@ class DifusionController extends BaseController
         $returnData = [
             'status' => 200,
             'message' => 'Lista de difusion creada',
+            'error' => $error,
             'susses' => true,
             'url' => '',
         ];
