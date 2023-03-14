@@ -495,7 +495,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 200,
                 'message' => 'El contacto ya existe en la lista de difusión',
-                'susses' => false,
+                'susses' => true,
                 'data' => '',
             ];
             return $this->response->setJSON($returnData);
