@@ -486,6 +486,21 @@ class DifusionController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
+        $lada = intval(preg_replace("/[^0-9]/", '',  $lada));
+        $telefono = intval(preg_replace("/[^0-9]/", '',  $telefono));
+
+        $existContacto = $contactoModel->where('telefono', $telefono)->where('lada', $lada)->where('id_grupoDifucion', $idDifucion)->first();
+
+        if ($existContacto) {
+            $returnData = [
+                'status' => 200,
+                'message' => 'El contacto ya existe en la lista de difusión',
+                'susses' => false,
+                'data' => '',
+            ];
+            return $this->response->setJSON($returnData);
+        }
+
         $contactoEntity = new \App\Entities\ContactosEntity();
         $contactoEntity->telefono = $telefono;
         $contactoEntity->lada = $lada;
