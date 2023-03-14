@@ -167,14 +167,17 @@ class DifusionController extends BaseController
                     continue;
                 }
 
-                if(!is_numeric($value[1]) || !is_numeric($value[0])){
+                $telefono = intval(preg_replace("/[^0-9]/", '',  $value[1]));
+                $lada = intval(preg_replace("/[^0-9]/", '',  $value[0]));
+
+                if(!is_numeric($telefono) || !is_numeric($lada)){
                     $error = "Hay campos que no son números que serán omitidos";
                     continue;
                 }
                 
                 $contactoEntity = new \App\Entities\ContactosEntity();
-                $contactoEntity->telefono = str_replace(' ', '', $value[1]);
-                $contactoEntity->lada = str_replace(' ', '', $value[0]);
+                $contactoEntity->telefono = $telefono;
+                $contactoEntity->lada = $lada;
                 $contactoEntity->nombre = $value[2];
                 $contactoEntity->empresa = (isset($value[3]))?$value[3]:"";
                 $contactoEntity->puesto = (isset($value[4]))?$value[4]:"";
