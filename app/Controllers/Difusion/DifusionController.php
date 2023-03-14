@@ -168,9 +168,9 @@ class DifusionController extends BaseController
                 $contactoEntity->telefono = $value[1];
                 $contactoEntity->lada = $value[0];
                 $contactoEntity->nombre = $value[2];
-                $contactoEntity->empresa = $value[3];
-                $contactoEntity->puesto = $value[4];
-                $contactoEntity->email = $value[5];
+                $contactoEntity->empresa = (isset($value[3]))?$value[3]:"";
+                $contactoEntity->puesto = (isset($value[4]))?$value[4]:"";
+                $contactoEntity->email = (isset($value[5]))?$value[5]:"";;
                 $contactoEntity->id_grupoDifucion = $idDifusion;
                 $contactoEntity->created_by = $idUsuario;
 
