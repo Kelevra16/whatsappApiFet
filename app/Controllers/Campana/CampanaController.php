@@ -213,7 +213,7 @@ class CampanaController extends BaseController
         //verificar si hay archivo
         if ($fileA = $adjuntoFile) {
             if ($fileA->isValid() && !$fileA->hasMoved()) {
-                $newName = time() . '_' . $fileA->getName();
+                $newName = time() . '_' . htmlentities($fileA->getName());
                 $fileA->move(WRITEPATH . 'uploads/' . $dateTimeData, $newName);
                 return [
                     'url' => 'viewfile/' . $dateTimeData . "/" . $newName,
@@ -225,7 +225,7 @@ class CampanaController extends BaseController
         //verificar si hay imagen
         if ($fileI = $adjuntoImg) {
             if ($fileI->isValid() && !$fileI->hasMoved()) {
-                $newName = time() . '_' . $fileI->getName();
+                $newName = time() . '_' . htmlentities($fileI->getName());
                 $fileI->move(WRITEPATH . 'uploads/' . $dateTimeData, $newName);
                 return [
                     'url' => 'viewfile/' . $dateTimeData . "/" . $newName,
