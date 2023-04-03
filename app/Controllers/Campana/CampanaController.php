@@ -92,9 +92,9 @@ class CampanaController extends BaseController
         $campaignEntity->mensaje = $message;
         $campaignEntity->adjunto = $urlArchive['url'];
         $campaignEntity->tipo = $tipoMensaje;
-        $campaignEntity->id_empresa = $idEmpresa; //cambiar por el id de la empresa logueada
+        $campaignEntity->idEmpresa = $idEmpresa; //cambiar por el id de la empresa logueada
         $campaignEntity->fecha_hora = $dateTimeNow;
-        $campaignEntity->id_grupos = $idGroups;
+        $campaignEntity->idGrupos = $idGroups;
         $campaignEntity->totalMensajes = count($contactos);
         $campaignEntity->status = "Creado";
         $campaignEntity->created_by = $idUsuario; //cambiar por el id del usuario logueado
@@ -185,9 +185,9 @@ class CampanaController extends BaseController
         }
 
         if($role <= 1){
-            $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->paginate(10,'default',$currentPage);
+            $campaigns = $campaignModel->where('idEmpresa',$idEmpresa)->paginate(10,'default',$currentPage);
         }else{
-            $campaigns = $campaignModel->where('id_empresa',$idEmpresa)->where('created_by',$idUsuario)->paginate(10,'default',$currentPage);
+            $campaigns = $campaignModel->where('idEmpresa',$idEmpresa)->where('created_by',$idUsuario)->paginate(10,'default',$currentPage);
         }
 
         $returnData = [
@@ -204,7 +204,7 @@ class CampanaController extends BaseController
     private function getContactsByGroups($arrayGroups)
     {
         $contactoModel = new \App\Models\ContactosModel();
-        $contactos = $contactoModel->whereIn('id_grupoDifucion', $arrayGroups)->findAll();
+        $contactos = $contactoModel->whereIn('idGrupoDifucion', $arrayGroups)->findAll();
         return $contactos;
     }
 
@@ -363,9 +363,9 @@ class CampanaController extends BaseController
         $campaignModel = new \App\Models\CampaignModel();
 
         if($role <= 1){
-            $campaign = $campaignModel->where('id_empresa',$idEmpresa)->where('id',$idCampaign)->first();
+            $campaign = $campaignModel->where('idEmpresa',$idEmpresa)->where('id',$idCampaign)->first();
         }else{
-            $campaign = $campaignModel->where('id_empresa',$idEmpresa)->where('id',$idCampaign)->where('created_by',$idUsuario)->first();
+            $campaign = $campaignModel->where('idEmpresa',$idEmpresa)->where('id',$idCampaign)->where('created_by',$idUsuario)->first();
         }
 
         if($campaign){

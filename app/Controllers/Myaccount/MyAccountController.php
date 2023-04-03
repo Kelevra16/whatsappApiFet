@@ -12,7 +12,7 @@ class MyAccountController extends BaseController
 
         $idUser = $session->get('idUser');
         $idEmpresa = $session->get('idEmpresa');
-        $idRole = $session->get('idrole');
+        $idRole = $session->get('idRole');
 
         $userModel = new \App\Models\UserModel();
         $user = $userModel->where('id', $idUser)->first();

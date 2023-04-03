@@ -10,7 +10,7 @@ class CommandEntity extends Entity
         "id"=>"",
         "titulo"=>"",
         "typeCommand"=>"",
-        "id_empresa"=>"",
+        "idEmpresa"=>"",
         "command"=>"",
         "actionCommand" => "",
         "created_by"=>""

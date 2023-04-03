@@ -14,7 +14,7 @@ class ContactosModel extends Model
     protected $returnType       = \App\Entities\ContactosEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ["telefono","lada","nombre","empresa","puesto","email","id_grupoDifucion","created_by"];
+    protected $allowedFields    = ["telefono","lada","nombre","empresa","puesto","email","idGrupoDifucion","created_by"];
 
     // Dates
     protected $useTimestamps = false;

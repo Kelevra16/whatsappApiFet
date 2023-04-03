@@ -37,9 +37,9 @@ class DifusionController extends BaseController
         $difusion = [];
 
         if ($role <= 1) {
-            $difusion = $difusionModel->where('id_empresa', $idEmpresa)->paginate(10,'default',$currentPage);
+            $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->paginate(10,'default',$currentPage);
         } else {
-            $difusion = $difusionModel->where('id_empresa', $idEmpresa)->where('created_by', $idUsuario)->paginate(10,'default',$currentPage);
+            $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->paginate(10,'default',$currentPage);
         }
 
         $returnData = [
@@ -115,7 +115,7 @@ class DifusionController extends BaseController
         $file = WRITEPATH . 'uploads/' . $file->getName();
 
         $difusionModel = new \App\Models\GrupoDifucionModel();
-        $difusion = $difusionModel->where('nombre', $nombre)->where('descripcion', $description)->where('id_empresa', $idEmpresa)->first();
+        $difusion = $difusionModel->where('nombre', $nombre)->where('descripcion', $description)->where('idEmpresa', $idEmpresa)->first();
 
         if ($difusion) {
             $returnData = [
@@ -136,7 +136,7 @@ class DifusionController extends BaseController
         $difusionEntity = new \App\Entities\GrupoDifucionEntity();
         $difusionEntity->nombre = $nombre;
         $difusionEntity->descripcion = $description;
-        $difusionEntity->id_empresa = $idEmpresa;
+        $difusionEntity->idEmpresa = $idEmpresa;
         $difusionEntity->iconImage = $icono;
         $difusionEntity->location = $location;
         $difusionEntity->totalContactos = 0;
@@ -182,7 +182,7 @@ class DifusionController extends BaseController
                 $contactoEntity->empresa = (isset($value[3]))?$value[3]:"";
                 $contactoEntity->puesto = (isset($value[4]))?$value[4]:"";
                 $contactoEntity->email = (isset($value[5]))?$value[5]:"";;
-                $contactoEntity->id_grupoDifucion = $idDifusion;
+                $contactoEntity->idGrupoDifucion = $idDifusion;
                 $contactoEntity->created_by = $idUsuario;
 
                 $data[] = $contactoEntity;
@@ -244,7 +244,7 @@ class DifusionController extends BaseController
         $idEmpresa = $session->get('idEmpresa');
 
         $difusionModel = new \App\Models\GrupoDifucionModel();
-        $difusion = $difusionModel->where('nombre', $nombre)->where('descripcion', $description)->where('id_empresa', $idEmpresa)->first();
+        $difusion = $difusionModel->where('nombre', $nombre)->where('descripcion', $description)->where('idEmpresa', $idEmpresa)->first();
 
         if ($difusion) {
             $returnData = [
@@ -260,7 +260,7 @@ class DifusionController extends BaseController
         $difusionEntity = new \App\Entities\GrupoDifucionEntity();
         $difusionEntity->nombre = $nombre;
         $difusionEntity->descripcion = $description;
-        $difusionEntity->id_empresa = $idEmpresa;
+        $difusionEntity->idEmpresa = $idEmpresa;
         $difusionEntity->iconImage = $icono;
         $difusionEntity->location = $location;
         $difusionEntity->totalContactos = 0;
@@ -337,7 +337,7 @@ class DifusionController extends BaseController
         $difusionModel = new \App\Models\GrupoDifucionModel();
         $listContactos = new \App\Models\ContactosModel();
         $difusion = $difusionModel->where('id', $idListDifusion)->first();
-        $list = $listContactos->where('id_grupoDifucion', $idListDifusion)->paginate(10,'default',$currentPage);
+        $list = $listContactos->where('idGrupoDifucion', $idListDifusion)->paginate(10,'default',$currentPage);
 
         if (!$difusion) {
             $returnData = [
@@ -385,7 +385,7 @@ class DifusionController extends BaseController
         $difucionModel = new \App\Models\GrupoDifucionModel();
         
         if($role <= 1){
-            $lisDifucionModel = $difucionModel->where('id_empresa', $idEmpresa)->findAll();
+            $lisDifucionModel = $difucionModel->where('idEmpresa', $idEmpresa)->findAll();
         }else{
             $lisDifucionModel = $difucionModel->where('created_by', $idUsuario)->findAll();
         }
@@ -396,7 +396,7 @@ class DifusionController extends BaseController
         }
 
 
-        $contacto = $contactoModel->where('id', $idContacto)->whereIn('id_grupoDifucion', $listIdDufucion)->first();
+        $contacto = $contactoModel->where('id', $idContacto)->whereIn('idGrupoDifucion', $listIdDufucion)->first();
 
         if (!$contacto) {
             $returnData = [
@@ -411,7 +411,7 @@ class DifusionController extends BaseController
         $sussesDelete = $contactoModel->delete($idContacto);
         
         if($sussesDelete){
-            $idDifusion = $contacto->id_grupoDifucion;
+            $idDifusion = $contacto->idGrupoDifucion;
             $difusionEnty = $difucionModel->where('id', $idDifusion)->first();
             $difusionEnty->totalContactos = $difusionEnty->totalContactos - 1;
             $difusionEnty->id = $idDifusion;
@@ -474,7 +474,7 @@ class DifusionController extends BaseController
         $difusionModel = new \App\Models\GrupoDifucionModel();
         $contactoModel = new \App\Models\ContactosModel();
 
-        $difusion = $difusionModel->where('id', $idDifucion)->where('id_empresa', $idEmpresa)->first();
+        $difusion = $difusionModel->where('id', $idDifucion)->where('idEmpresa', $idEmpresa)->first();
 
         if (!$difusion) {
             $returnData = [
@@ -489,7 +489,7 @@ class DifusionController extends BaseController
         $lada = intval(preg_replace("/[^0-9]/", '',  $lada));
         $telefono = intval(preg_replace("/[^0-9]/", '',  $telefono));
 
-        $existContacto = $contactoModel->where('telefono', $telefono)->where('lada', $lada)->where('id_grupoDifucion', $idDifucion)->first();
+        $existContacto = $contactoModel->where('telefono', $telefono)->where('lada', $lada)->where('idGrupoDifucion', $idDifucion)->first();
 
         if ($existContacto) {
             $returnData = [
@@ -508,7 +508,7 @@ class DifusionController extends BaseController
         $contactoEntity->empresa = $empresa;
         $contactoEntity->puesto = $puesto;
         $contactoEntity->email = $email;
-        $contactoEntity->id_grupoDifucion = $idDifucion;
+        $contactoEntity->idGrupoDifucion = $idDifucion;
         $contactoEntity->created_by = $idUsuario;
 
         $idContacto = $contactoModel->insert($contactoEntity);

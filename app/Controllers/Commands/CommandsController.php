@@ -77,7 +77,7 @@ class CommandsController extends BaseController
 
         $commandModel = new \App\Models\CommandModel();
 
-        $command = $commandModel->where('command',$comando)->where('id_empresa',$idEmpresa)->first();
+        $command = $commandModel->where('command',$comando)->where('idEmpresa',$idEmpresa)->first();
 
         if(!$command){
             log_message('alert','No se encontró el comando: '.$comando);
@@ -110,7 +110,7 @@ class CommandsController extends BaseController
         $empresaModel = new \App\Models\EmpresaModel();
         $empresa = $empresaModel->find($idEmpresa);
         $token = $empresa->tokenApi;
-        $idGrupoDifucion = $action->id_grupoDifucion;
+        $idGrupoDifucion = $action->idGrupoDifucion;
 
         $grupoDifucionModel = new \App\Models\GrupoDifucionModel();
         $grupoDifucion = $grupoDifucionModel->where("id",$idGrupoDifucion)->first();
@@ -123,7 +123,7 @@ class CommandsController extends BaseController
         }
 
         $contactModel = new \App\Models\ContactosModel();
-        $contact = $contactModel->where('telefono',$phone)->where('lada',$lada)->where('id_grupoDifucion',$idGrupoDifucion)->first();
+        $contact = $contactModel->where('telefono',$phone)->where('lada',$lada)->where('idGrupoDifucion',$idGrupoDifucion)->first();
 
         if($contact){
             $message = "Ya te encuentras Suscrito";
@@ -133,7 +133,7 @@ class CommandsController extends BaseController
         }
 
         $contactoEntity = new \App\Entities\ContactosEntity();
-        $contactoEntity->id_grupoDifucion = $idGrupoDifucion;
+        $contactoEntity->idGrupoDifucion = $idGrupoDifucion;
         $contactoEntity->nombre = $nombre;
         $contactoEntity->telefono = $phone;
         $contactoEntity->lada = $lada;
@@ -216,7 +216,7 @@ class CommandsController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        $commands = $commandModel->where('id_empresa',$idEmpresa)->paginate(10,'commands',$currentPage);
+        $commands = $commandModel->where('idEmpresa',$idEmpresa)->paginate(10,'commands',$currentPage);
         $userModel = new \App\Models\UserModel();
 
         foreach ($commands as $key => $command) {
@@ -255,7 +255,7 @@ class CommandsController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        $command = $commandModel->where('id_empresa',$idEmpresa)->where('id',$idCommand)->where('created_by',$idUsuario)->first();
+        $command = $commandModel->where('idEmpresa',$idEmpresa)->where('id',$idCommand)->where('created_by',$idUsuario)->first();
         
 
         if($command){

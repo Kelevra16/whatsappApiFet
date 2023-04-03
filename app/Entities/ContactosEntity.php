@@ -14,7 +14,7 @@ class ContactosEntity extends Entity
         'empresa'           =>  "",
         'puesto'            =>  "",
         'email'             =>  "",
-        'id_grupoDifucion'  =>  "",
+        'idGrupoDifucion'  =>  "",
         'created_by'        =>  ""
     ];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];

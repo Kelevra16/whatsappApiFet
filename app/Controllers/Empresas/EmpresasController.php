@@ -171,7 +171,7 @@ class EmpresasController extends BaseController
 
         $id = $this->request->getVar('idEmpresa');
         $usuarioModel = new \App\Models\UserModel();
-        $usuario = $usuarioModel->where('id_empresa', $id)->first();
+        $usuario = $usuarioModel->where('idEmpresa', $id)->first();
 
         if($usuario){
             $returnData = [

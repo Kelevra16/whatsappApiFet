@@ -14,8 +14,8 @@ class UserEntity extends Entity
         "aPaterno" => "",
         "aMaterno" => "",
         "correo" => "",
-        "id_rol" => "",
-        "id_empresa" => ""
+        "idRol" => "",
+        "idEmpresa" => ""
     ];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];

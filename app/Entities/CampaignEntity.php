@@ -12,11 +12,11 @@ class CampaignEntity extends Entity
         "mensaje" => "",
         "adjunto" => "",
         "tipo" => 0,
-        "id_empresa"=> 0,
+        "idEmpresa"=> 0,
         "codido" => "",
         "UUID" => "",
         "fecha_hora" => "",
-        "id_grupos" => 0,
+        "idGrupos" => 0,
         "status" => "",
         "totalMensajes" => 0,
         "created_by" => 0

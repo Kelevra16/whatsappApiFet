@@ -14,7 +14,7 @@ class GrupoDifucionModel extends Model
     protected $returnType       = \App\Entities\GrupoDifucionEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ["nombre","descripcion","id_empresa","iconImage","totalContactos","location","created_by"];
+    protected $allowedFields    = ["nombre","descripcion","idEmpresa","iconImage","totalContactos","location","created_by"];
 
     // Dates
     protected $useTimestamps = false;

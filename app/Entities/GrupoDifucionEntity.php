@@ -10,7 +10,7 @@ class GrupoDifucionEntity extends Entity
         "id" => "",
         "nombre" => "",
         "descripcion" => "",
-        "id_empresa" => 0,
+        "idEmpresa" => 0,
         "iconImage" => "",
         "location" => "",
         "totalContactos" => 0,

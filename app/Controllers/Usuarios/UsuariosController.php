@@ -52,7 +52,7 @@ class UsuariosController extends BaseController
         if ($role == 0) {
             $usuarios = $usuariosModel->paginate(10,'default',$currentPage);
         }else{
-            $usuarios = $usuariosModel->where('id_empresa', $idEmpresa)->paginate(10,'default',$currentPage);
+            $usuarios = $usuariosModel->where('idEmpresa', $idEmpresa)->paginate(10,'default',$currentPage);
         }
 
         if (empty($usuarios)) {
@@ -67,8 +67,8 @@ class UsuariosController extends BaseController
         }
 
         foreach ($usuarios as $key => $usuario) {
-            $empresa = $empresaModel->where('id', $usuario->id_empresa)->first();
-            $role = $roleModel->where('id', $usuario->id_rol)->first();
+            $empresa = $empresaModel->where('id', $usuario->idEmpresa)->first();
+            $role = $roleModel->where('id', $usuario->idRol)->first();
 
             $usuarios[$key]->empresa = $empresa->nombre;
             $usuarios[$key]->role = $role->nombre;
@@ -130,7 +130,7 @@ class UsuariosController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        if ($usuario->id_empresa != $idEmpresa && $role == 1) {
+        if ($usuario->idEmpresa != $idEmpresa && $role == 1) {
             $returnData = [
                 'status' => 200,
                 'message' => 'No tienes permisos para eliminar este usuario',
@@ -190,7 +190,7 @@ class UsuariosController extends BaseController
     public function saveUser(){
         $session = \Config\Services::session();
         $roleSession = $session->get('role');
-        $idroleSession = $session->get('idrole');
+        $idRoleSession = $session->get('idRole');
         $empresaSession = $session->get('idEmpresa');
 
         $inputs = $this->validate([
@@ -322,8 +322,8 @@ class UsuariosController extends BaseController
         $userEntity->aMaterno = $aMaterno;
         $userEntity->correo = $email;
         $userEntity->password = $this->generateHash($password);
-        $userEntity->id_empresa = $idEmpresa;
-        $userEntity->id_rol = $idRole;
+        $userEntity->idEmpresa = $idEmpresa;
+        $userEntity->idRol = $idRole;
 
 
         $usuariosModel = new \App\Models\UserModel();

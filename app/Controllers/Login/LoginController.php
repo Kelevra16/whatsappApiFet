@@ -73,16 +73,16 @@ class LoginController extends BaseController
         }
 
         $roleModel = new \App\Models\RolesModel();
-        $role = $roleModel->where('id', $user->id_rol)->first();
+        $role = $roleModel->where('id', $user->idRol)->first();
 
         $empresaModel = new \App\Models\EmpresaModel();
-        $empresa = $empresaModel->where('id', $user->id_empresa)->first();
+        $empresa = $empresaModel->where('id', $user->idEmpresa)->first();
         $ses_data = [
             'idUser' => $user->id,
             'username' => $user->username,
-            'idrole' => $user->id_rol,
+            'idRole' => $user->idRol,
             'role' => $role->nivel,
-            'idEmpresa' => $user->id_empresa,
+            'idEmpresa' => $user->idEmpresa,
             'tokenApi' => $empresa->tokenApi,
             'logged_in' => TRUE
         ];

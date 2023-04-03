@@ -14,7 +14,7 @@ class CommandModel extends Model
     protected $returnType       =  \App\Entities\CommandEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ["titulo","typeCommand","id_empresa","command","actionCommand","created_by"];
+    protected $allowedFields    = ["titulo","typeCommand","idEmpresa","command","actionCommand","created_by"];
 
     // Dates
     protected $useTimestamps = false;
