@@ -11,15 +11,17 @@ class CampaignEntity extends Entity
         "titulo" => "",
         "mensaje" => "",
         "adjunto" => "",
-        "tipo" => 0,
-        "idEmpresa"=> 0,
+        "messageType" => "",
+        "idEmpresa" => 0,
         "codido" => "",
-        "UUID" => "",
-        "fecha_hora" => "",
-        "idGrupos" => 0,
-        "status" => "",
+        "idGrupos" => "",
+        "status" => "PENDIENTE",
+        "totalEnviado" => 0,
+        "totalEntregado" => 0,
+        "totalVisto" => 0,
+        "totalError" => 0,
         "totalMensajes" => 0,
-        "created_by" => 0
+        "created_by" => 0,
     ];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];

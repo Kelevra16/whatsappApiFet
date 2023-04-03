@@ -14,7 +14,7 @@ class CampaignModel extends Model
     protected $returnType       = \App\Entities\CampaignEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ["titulo","mensaje","adjunto","tipo","idEmpresa","codido","UUID","fecha_hora","idGrupos","status","totalMensajes","created_by"];
+    protected $allowedFields    = ["titulo","mensaje","adjunto","messageType","idEmpresa","codido","idGrupos","status","totalEnviado","totalEntregado","totalVisto","totalError","totalMensajes","created_by"];
 
     // Dates
     protected $useTimestamps = false;
