@@ -306,7 +306,7 @@ class CommandsController extends BaseController
             $msgId = $data->msgId;
             $ackCode = $data->ackCode;
 
-            $messageQueue = $messageQueueModel->where('idEmpresa',$idEmpresa)->where('msgId',$msgId)->where('status','PENDIENTE')->first();
+            $messageQueue = $messageQueueModel->where('idEmpresa',$idEmpresa)->where('msgId',$msgId)->first();
 
             if(!$messageQueue){
                 log_message('alert','No se encontró el mensaje: '.$msgId);
