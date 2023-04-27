@@ -173,7 +173,7 @@ function getListDifucion(){
       redirect: 'follow'
     };
 
-    fetch("/difusion/listDifusion", requestOptions)
+    fetch("/difusion/listDifusion/0", requestOptions)
       .then(response => response.json())
       .then(result => {
         console.log(result)

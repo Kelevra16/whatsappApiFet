@@ -132,5 +132,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/newcampaign.js?v=1.0.3"></script>
+<script src="/assets/js/newcampaign.js?v=1.0.4"></script>
 <?= $this->endSection() ?>

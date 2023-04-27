@@ -36,19 +36,35 @@ class DifusionController extends BaseController
 
         $difusion = [];
 
-        if ($role <= 1) {
-            $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->paginate(10,'default',$currentPage);
-        } else {
-            $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->paginate(10,'default',$currentPage);
+        if($currentPage == 0){
+            if ($role <= 1) {
+                $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->findAll();
+            } else {
+                $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->findAll();
+            }
+    
+            $returnData = [
+                'status' => 200,
+                'message' => 'Lista de difusion',
+                'susses' => true,
+                'data' => $difusion,
+                'pager' => '',
+            ];
+        }else{
+            if ($role <= 1) {
+                $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->paginate(10,'default',$currentPage);
+            } else {
+                $difusion = $difusionModel->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->paginate(10,'default',$currentPage);
+            }
+    
+            $returnData = [
+                'status' => 200,
+                'message' => 'Lista de difusion',
+                'susses' => true,
+                'data' => $difusion,
+                'pager' => $difusionModel->pager->getPageCount(),
+            ];
         }
-
-        $returnData = [
-            'status' => 200,
-            'message' => 'Lista de difusion',
-            'susses' => true,
-            'data' => $difusion,
-            'pager' => $difusionModel->pager->getPageCount(),
-        ];
 
         return $this->response->setJSON($returnData);
     }
