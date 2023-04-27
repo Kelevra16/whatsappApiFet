@@ -3,7 +3,7 @@
 namespace App\Controllers\Campaign;
 
 use App\Controllers\BaseController;
-use App\Controllers\ApiWhatsApp\ApiWhatsAppController;
+use App\Controllers\ApiWhatsApp\ApiWhatsAppController as ApiWhatsApp;
 use App\Models\MessageQueueModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Database\Exceptions\DataException;
@@ -47,12 +47,43 @@ class CampaignController extends BaseController
         //     return redirect()->to(base_url('/'));
         // }
 
+        $api = new ApiWhatsApp();
+
+        $token = $session->get('tokenApi');
         $request = \Config\Services::request();
         $message = $request->getPost('message');
         $titulo = $request->getPost('titulo');
         $idGroups = $request->getPost('groups');
         $adjuntoFile = $request->getFile('adjuntoFile');
         $adjuntoImg = $request->getFile('adjuntoImg');
+
+        $serviceEstatus = $api->getEstadoInstancia($token);
+
+
+        if($serviceEstatus){
+            if ($serviceEstatus->exito === true && $serviceEstatus->estatus->logueado === false) {
+                $dataRes = [
+                    'status' => 400,
+                    'message' => 'No esta conectado a la API de WhatsApp, por favor escanea el código QR',
+                    'susses' => false,
+                    'data' => []
+                ];
+
+                return $this->response->setJSON($dataRes);
+            }
+
+            if ($serviceEstatus->exito === false) {
+                $dataRes = [
+                    'status' => 400,
+                    'message' => 'La API de WhatsApp no esta disponible, por favor intente mas tarde',
+                    'susses' => false,
+                    'data' => []
+                ];
+
+                return $this->response->setJSON($dataRes);
+            }
+        }
+
 
         $arrayGroups = explode(',', $idGroups);
         $contactos = $this->getContactsByGroups($arrayGroups);
@@ -77,7 +108,6 @@ class CampaignController extends BaseController
 
         $idUsuario = $session->get('idUser');
         $idEmpresa = $session->get('idEmpresa');
-        $token = $session->get('tokenApi');
 
         if ($idUsuario == null || $idEmpresa == null) {
             $returnData = [
