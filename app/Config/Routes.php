@@ -38,6 +38,7 @@ $routes->post('/webhook/(:any)', 'Commands\CommandsController::commandAction/$1'
 $routes->get("/cronjob", "CronJob\CronJobController::cronJobStart");
 $routes->cli("cronjob", "CronJob\CronJobController::cronJobStart");
 $routes->cli("pruebajob", "CronJob\CronJobController::prueba");
+$routes->get("/pruebajob", "CronJob\CronJobController::prueba");
 
 $routes->group('difusion', function($routes) {
     $routes->get('/', 'Difusion\DifusionController::index');
