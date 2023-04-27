@@ -75,7 +75,7 @@ function getListDifucion(cuPage = 1) {
                 const a1 = document.createElement('a');
                 a1.classList.add('btn', 'btt-blue-send','me-2','mb-2');
                 a1.innerHTML = 'Enviar mensaje';
-                a1.setAttribute('onclick', 'createdCampaing(' + element.id + ')');
+                a1.setAttribute('onclick', 'createdCampaign(' + element.id + ')');
                 const a2 = document.createElement('a');
                 a2.classList.add('btn', 'btt-blue-edit','me-2','mb-2');
                 a2.innerHTML = 'Editar';
@@ -247,4 +247,12 @@ const paginate = (pagesMax, selector) => {
 function editList($idList) {
     console.log($idList);
     window.location.href = '/difusion/edit/' + $idList;
+}
+
+const createdCampaign = (idDiffusion) =>{
+    console.log(idDiffusion);
+    let listDifucion = [];
+    listDifucion.push(idDiffusion);
+    let groups = listDifucion.join(',');
+    console.log(groups);
 }

@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CampaignModel extends Model
+class MessageQueueModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'campaign';
+    protected $table            = 'messageQueue';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = \App\Entities\CampaignEntity::class;
-    protected $useSoftDeletes   = true;
+    protected $returnType       = \App\Entities\MessageQueueEntity::class;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["titulo","mensaje","adjunto","messageType","idEmpresa","codigo","idGrupos","status","dateSend","totalEnviado","totalEntregado","totalVisto","totalError","totalMensajes","created_by"];
+    protected $allowedFields    = ["idContact","phone","idEmpresa","idCampaign","messageJson","msgId","status","sentAt","scheduledAt","created_by","retryCount","lastError","messageType"];
 
     // Dates
     protected $useTimestamps = false;

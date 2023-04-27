@@ -99,5 +99,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/newdifusion.js"></script>
+<script src="/assets/js/newdifusion.js?v=1.0.2"></script>
 <?= $this->endSection() ?>

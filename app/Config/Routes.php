@@ -35,6 +35,9 @@ $routes->get('/logout', 'Login\LoginController::logout');
 $routes->get('/viewfile/(:any)/(:any)', 'Home::fileView/$1/$2');
 $routes->post('/webhook', 'UtilsFunction::getAllrequestPOST');
 $routes->post('/webhook/(:any)', 'Commands\CommandsController::commandAction/$1');
+$routes->get("/cronjob", "CronJob\CronJobController::cronJobStart");
+$routes->cli("/cronjob", "CronJob\CronJobController::cronJobStart");
+$routes->cli("/pruebajob", "CronJob\CronJobController::prueba");
 
 $routes->group('difusion', function($routes) {
     $routes->get('/', 'Difusion\DifusionController::index');
@@ -51,12 +54,12 @@ $routes->group('difusion', function($routes) {
 
 
 $routes->group('campaign', function($routes) {
-    $routes->get('new', 'Campana\CampanaController::index');
+    $routes->get('new', 'Campaign\CampaignController::index');
     $routes->get('/', 'Dashboard\DashboardController::index');
-    $routes->post('list', 'Campana\CampanaController::getListCampaign');
-    $routes->post('list/(:num)', 'Campana\CampanaController::getListCampaign/$1');
-    $routes->post('save', 'Campana\CampanaController::saveCampaign');
-    $routes->post('deleteCampaign', 'Campana\CampanaController::deleteCampaign');
+    $routes->post('list', 'Campaign\CampaignController::getListCampaign');
+    $routes->post('list/(:num)', 'Campaign\CampaignController::getListCampaign/$1');
+    $routes->post('save', 'Campaign\CampaignController::saveCampaign');
+    $routes->post('deleteCampaign', 'Campaign\CampaignController::deleteCampaign');
 });
 
 $routes->group('myaccount',function($routes){

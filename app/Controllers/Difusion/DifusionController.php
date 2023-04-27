@@ -155,6 +155,7 @@ class DifusionController extends BaseController
         }
 
         $contactoModel = new \App\Models\ContactosModel();
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 
         $data = [];
         $total = 0;
@@ -174,6 +175,31 @@ class DifusionController extends BaseController
                     $error = "Hay campos que no son números que serán omitidos";
                     continue;
                 }
+
+
+                try {
+                   $swissNumberStr = '+' . $lada . $telefono;
+                    $swissNumberProto = $phoneUtil->parse($swissNumberStr);
+                    $isValid = $phoneUtil->isValidNumber($swissNumberProto);
+                    if (!$isValid) {
+                        $error = "Hay campos que no son números válidos que serán omitidos";
+                        continue;
+                    }
+
+                    $region = $phoneUtil->getRegionCodeForNumber($swissNumberProto);
+
+                    if ($region == 'MX') {
+                        if ($lada != '521') {
+                            $lada = '521';
+                        }
+                    }
+
+                } catch (\libphonenumber\NumberParseException $e) {
+                    $error = "Hay campos que no son números válidos que serán omitidos";
+                    continue;
+                }
+
+
                 
                 $contactoEntity = new \App\Entities\ContactosEntity();
                 $contactoEntity->telefono = $telefono;

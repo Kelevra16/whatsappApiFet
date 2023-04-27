@@ -21,7 +21,7 @@ class DashboardController extends BaseController
         ];
 
         return  view('page/parts/head', $data)
-            .   view('page/campana/campanaBody_view')
+            .   view('page/campaign/campaignBody_view')
             .   view('page/parts/footer');
     }
 

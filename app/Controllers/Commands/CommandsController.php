@@ -61,44 +61,34 @@ class CommandsController extends BaseController
             log_message('alert','No se recibieron datos por POST');
         }
 
-        if ($posts->type != "message"){
+        if (!$posts->type ){
             $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
             log_message('alert','Status: '.$postString);
             return;
         }
 
-        if ($posts->type == "message" && $posts->message->fromMe == true){
-            $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
-            log_message('alert','Mensaje propios: '.$postString);
-            return;
-        }
+        switch ($posts->type) {
+            case 'message':
+                if ($posts->message->fromMe == true){
+                    $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
+                    log_message('alert','Mensaje propios: '.$postString);
+                }else{
+                    $this->commandExecution($posts,$idEmpresa);
+                }
+            break;
 
-        $comando = html_entity_decode($posts->message->text);
+            case 'ack':
+                $this->updateStatus($posts,$idEmpresa);
+            break;
 
-        $commandModel = new \App\Models\CommandModel();
-
-        $command = $commandModel->where('command',$comando)->where('idEmpresa',$idEmpresa)->first();
-
-        if(!$command){
-            log_message('alert','No se encontró el comando: '.$comando);
-            $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
-            log_message('alert','Sin Comando: '.$postString);
-            return;
-        }
-
-        $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
-        log_message('alert','mensaje de comando: '.$postString);
-
-        switch ($command->typeCommand) {
-            case 'Suscribir':
-                $telefonoCompleto = $posts->user->phone;
-                $nombre = $posts->user->name;
-                $calculateLada = strlen($telefonoCompleto) - 10;
-                $lada = substr($telefonoCompleto, 0, $calculateLada);
-                $phone = substr($telefonoCompleto, 3, 10);
-                $action = json_decode($command->actionCommand);
-                $this->commandSubscription($idEmpresa,$phone,$lada,$nombre,$action);
-                break;
+            case 'error':
+                $this->statusError($posts,$idEmpresa);
+            break;
+            
+            default:
+                $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
+                log_message('alert','Status: '.$postString);
+            break;
         }
 
 
@@ -276,5 +266,219 @@ class CommandsController extends BaseController
             ];
             return $this->response->setJSON($returnData);
         }
+    }
+
+    private function commandExecution($posts,$idEmpresa){
+        $comando = html_entity_decode($posts->message->text);
+
+        $commandModel = new \App\Models\CommandModel();
+
+        $command = $commandModel->where('command',$comando)->where('idEmpresa',$idEmpresa)->first();
+
+        if(!$command){
+            log_message('alert','No se encontró el comando: '.$comando);
+            $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
+            log_message('alert','Sin Comando: '.$postString);
+            return;
+        }
+
+        $postString = json_encode($posts,JSON_UNESCAPED_UNICODE);
+        log_message('alert','mensaje de comando: '.$postString);
+
+        switch ($command->typeCommand) {
+            case 'Suscribir':
+                $telefonoCompleto = $posts->user->phone;
+                $nombre = $posts->user->name;
+                $calculateLada = strlen($telefonoCompleto) - 10;
+                $lada = substr($telefonoCompleto, 0, $calculateLada);
+                $phone = substr($telefonoCompleto, 3, 10);
+                $action = json_decode($command->actionCommand);
+                $this->commandSubscription($idEmpresa,$phone,$lada,$nombre,$action);
+                break;
+        }
+    }
+
+    private function updateStatus($post,$idEmpresa){
+        $messageQueueModel = new \App\Models\MessageQueueModel();
+        $campaignModel = new \App\Models\CampaignModel();
+
+        foreach ($post->data as $data) {
+            $msgId = $data->msgId;
+            $ackCode = $data->ackCode;
+
+            $messageQueue = $messageQueueModel->where('idEmpresa',$idEmpresa)->where('msgId',$msgId)->where('status','PENDIENTE')->first();
+
+            if(!$messageQueue){
+                log_message('alert','No se encontró el mensaje: '.$msgId);
+                continue;
+            }
+
+            $estatus ="";
+
+            switch ($ackCode) {
+                case '1':
+                    $estatus = "ENVIADO";
+                    break;
+                
+                case '2':
+                    $estatus = "ENTREGADO";
+                    break;
+
+                case '3':
+                    $estatus = "VISTO";
+                    break;
+
+                default:
+                    log_message('alert', 'Estatus desconocido: ' . $ackCode);
+                    $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+                    log_message('alert','Estatus desconocido: '.$postString);
+                    break;
+            }
+
+            if ($estatus === $messageQueue->status) {
+                continue;
+            }
+
+            if ($messageQueue->status === "VISTO") {
+                log_message('alert', 'No se puede cambiar el estatus de un mensaje visto');
+                continue;
+            }
+
+            if ($messageQueue->status === "ENTREGADO" && $estatus === "ENVIADO") {
+                log_message('alert', 'No se puede cambiar el estatus de un mensaje entregado a enviado');
+                continue;
+            }
+
+
+            $campaign = $campaignModel->find($messageQueue->idCampaign);
+
+            if ($estatus === "ENVIADO") {
+                $campaign->totalEnviado = $campaign->totalEnviado + 1;
+            } elseif ($estatus === "ENTREGADO") {
+                $campaign->totalEntregado = $campaign->totalEntregado + 1;
+            } elseif ($estatus === "VISTO") {
+                $campaign->totalVisto = $campaign->totalVisto + 1;
+            }
+
+            if ($messageQueue->status !== $estatus) {
+                if ($messageQueue->status === "ENVIADO") {
+                    $campaign->totalEnviado = $campaign->totalEnviado - 1;
+                } elseif ($messageQueue->status === "ENTREGADO" && $estatus === "VISTO") {
+                    $campaign->totalEntregado = $campaign->totalEntregado - 1;
+                }
+            }
+
+            $messageQueue->status = $estatus;
+            $messageQueueModel->save($messageQueue);
+            $campaignModel->save($campaign);
+            $postString = json_encode($post, JSON_UNESCAPED_UNICODE);
+            log_message('alert', 'Mensaje actualizado: ' . $postString);
+
+
+
+            // if ($messageQueue->status == "PENDIENTE"){
+            //     $messageQueue->status = $estatus;
+            //     $messageQueueModel->save($messageQueue);
+            //     $campaign = $campaignModel->find($messageQueue->idCampaign);
+            //     $campaign->totalEnviado = $campaign->totalEnviado + 1;
+            //     $campaignModel->save($campaign);
+            //     $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            //     log_message('alert','Mensaje actualizado: '.$postString);
+            // }else{
+
+            //     switch ($messageQueue->status) {
+            //         case 'ENVIADO':
+            //             $messageQueue->status = $estatus;
+            //             $messageQueueModel->save($messageQueue);
+            //             $campaign = $campaignModel->find($messageQueue->idCampaign);
+            //             $campaign->totalEnviado = $campaign->totalEnviado - 1;
+
+            //             switch ($estatus) {
+            //                 case 'ENTREGADO':
+            //                     $campaign->totalEntregado = $campaign->totalEntregado + 1;
+            //                     break;
+                            
+            //                 case 'VISTO':
+            //                     $campaign->totalVisto = $campaign->totalVisto + 1;
+            //                     break;
+            //             }
+                        
+            //             $campaignModel->save($campaign);
+            //             $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            //             log_message('alert','Mensaje actualizado: '.$postString);
+                        
+            //             break;
+
+            //         case 'ENTREGADO':
+            //             if($estatus == "VISTO"){
+            //                 $messageQueue->status = $estatus;
+            //                 $messageQueueModel->save($messageQueue);
+            //                 $campaign = $campaignModel->find($messageQueue->idCampaign);
+            //                 $campaign->totalEntregado = $campaign->totalEntregado - 1;
+            //                 $campaign->totalVisto = $campaign->totalVisto + 1;
+            //                 $campaignModel->save($campaign);
+            //                 $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            //                 log_message('alert','Mensaje actualizado: '.$postString);
+            //             }
+            //             break;
+            //     }
+
+            // }
+
+
+
+        }
+    }
+
+    private function statusError($post,$idEmpresa){
+        $messageQueueModel = new \App\Models\MessageQueueModel();
+        $campaignModel = new \App\Models\CampaignModel();
+
+        if (!$post->data) {
+            $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            log_message('alert','No se encontró los datos: '.$postString);
+            return;
+        }
+
+        $msgId = $post->data->id;
+
+        $messageQueue = $messageQueueModel->where('idEmpresa',$idEmpresa)->where('msgId',$msgId)->where('status','PENDIENTE')->first();
+
+        if($messageQueue){
+            $messageQueue->status = "ERROR";
+            $messageQueue->lastError = $post->message;
+            $messageQueueModel->save($messageQueue);
+            $campaign = $campaignModel->find($messageQueue->idCampaign);
+            $campaign->totalError = $campaign->totalError + 1;
+            $campaignModel->save($campaign);
+            $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            log_message('alert','Mensaje actualizado: '.$postString);
+        }else{
+            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+            $string = $post->data->to_number;
+            $parts = explode("@", $string);
+            $telefono = $parts[0];
+            $swissNumberStr = '+' . $telefono;
+            $swissNumberProto = $phoneUtil->parse($swissNumberStr);
+            $telefono = $swissNumberProto->getNationalNumber();
+            $messageQueue2 = $messageQueueModel->where('idEmpresa',$idEmpresa)->where('phone',$telefono)->where('status','PENDIENTE')->first();
+
+            if (!$messageQueue2) {
+                $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+                log_message('alert','No se encontró el mensaje: '.$postString);
+                return;
+            }
+
+            $messageQueue2->status = "ERROR";
+            $messageQueue2->lastError = $post->message;
+            $messageQueueModel->save($messageQueue2);
+            $campaign = $campaignModel->find($messageQueue2->idCampaign);
+            $campaign->totalError = $campaign->totalError + 1;
+            $campaignModel->save($campaign);
+            $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
+            log_message('alert','Mensaje actualizado: '.$postString);
+        }
+
+
     }
 }

@@ -134,7 +134,8 @@ function sendCanpaing(){
             if(result.susses){
                 Swal.fire({
                     icon: 'success',
-                    title: 'Campaña enviada',
+                    title: 'Campaña creada',
+                    text: result.message,
                     showConfirmButton: true,
                   }).then((result) => {
                     window.location.href = '/campaign/new';

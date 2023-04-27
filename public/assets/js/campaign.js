@@ -21,96 +21,54 @@ function getListCampaign(cuPage = 1){
             if(result.susses && result.status == "200"){
                 bodyTableCampaign.innerHTML = '';
                 result.data.forEach(element => {
-                    const tr = document.createElement('tr');
-                    const td1 = document.createElement('td');
-                    td1.classList.add('align-middle');
-                    const div1 = document.createElement('div');
-                    div1.classList.add('d-flex', 'align-items-center');
-                    const img = document.createElement('img');
-                    img.setAttribute('width', '45px');
-                    img.setAttribute('height', '45px');
-                    img.classList.add('img-fluid','imgCamping');
-                    img.src = '/assets/img/dashboard/noimage.png';
-                    const span1 = document.createElement('span');
-                    span1.classList.add('ms-2', 'me-3', 'fw-normal',"col");
-                    span1.innerHTML = element.titulo;
-                    const button1 = document.createElement('button');
-                    button1.classList.add('btn', 'btt-blue-send','buttonBlueMax');
-                    button1.innerHTML = 'Mandar de nuevo';
-                    const td2 = document.createElement('td');
-                    td2.classList.add('align-middle');
-                    const div2 = document.createElement('div');
-                    div2.classList.add('d-flex', 'flex-wrap', 'flex-column');
-                    const span2 = document.createElement('span');
-                    span2.classList.add('fw-normal', 'ms-2', 'me-3');
-                    span2.innerHTML = element.fecha_hora;
-                    const td3 = document.createElement('td');
-                    td3.classList.add('align-middle');
-                    const div3 = document.createElement('div');
-                    div3.classList.add('d-flex', 'flex-wrap', 'flex-column');
-                    const span3 = document.createElement('span');
-                    span3.classList.add('fw-normal');
-                    span3.innerHTML = element.totalMensajes;
-                    const span4 = document.createElement('span');
-                    span4.classList.add('fw-normal');
-                    span4.innerHTML = ' Mensajes abiertos';
-                    const td4 = document.createElement('td');
-                    td4.classList.add('align-middle','text-center');
-                    const button2 = document.createElement('button');
-                    button2.classList.add('btn', 'btt-green-circle','mx-1');
-                    button2.innerHTML = element.status;
 
-                    const button3 = document.createElement('button');
-                    button3.classList.add('btn', 'btt-red-cancel-circle');
-                    button3.innerHTML = "Eliminar";
-                    button3.setAttribute('onclick', 'deleteCampaign(' + element.id + ')');
-
-                    bodyTableCampaign.appendChild(tr);
-                    tr.appendChild(td1);
-                    td1.appendChild(div1);
-                    div1.appendChild(img);
-                    div1.appendChild(span1);
-                    div1.appendChild(button1);
-                    tr.appendChild(td2);
-                    td2.appendChild(div2);
-                    div2.appendChild(span2);
-                    tr.appendChild(td3);
-                    td3.appendChild(div3);
-                    div3.appendChild(span3);
-                    div3.appendChild(span4);
-                    tr.appendChild(td4);
-                    td4.appendChild(button2);
-                    td4.appendChild(button3);
+                    bodyTableCampaign.innerHTML += `
+                    <tr>
+                        <td class="align-middle">
+                            <div class="d-flex align-items-center">
+                                <img width="45px" height="45px" class="img-fluid imgCamping" src="/assets/img/dashboard/noimage.png">
+                                <span class="ms-2 me-3 fw-normal col">${element.titulo}</span>
+                                <button class="btn btt-blue-send buttonBlueMax disabled" disabled >Mandar de nuevo</button>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <div class="d-flex flex-wrap flex-column">
+                                <span class="fw-normal ms-2 me-3">${element.dateSend}</span>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <div class="d-flex flex-wrap flex-column">
+                                <span class="fw-normal">${element.totalMensajes}</span>
+                                <span class="fw-normal">Contactos</span>
+                            </div>
+                        </td>
+                        <td class="align-middle text-center">
+                            <button class="btn btt-green-circle mx-1">${element.status}</button>
+                        </td>
+                        <td class="align-middle">
+                        <button class="btn btt-red-cancel" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar campaña" onclick="deleteCampaign(${element.id })"><i class="bi bi-trash"></i></button>
+                    </td>
+                    </tr>
+                    `
                 });
 
                 currentPage = cuPage;
                 let maxPage = result.pager;
                 paginate(maxPage, '.pagination');
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
             }else{
                 console.log('error', result)
                 bodyTableCampaign.innerHTML = '';
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.classList.add('align-middle','text-center');
-                td.innerHTML = 'No hay campañas';
-                td.setAttribute('colspan', '4');
-                tr.appendChild(td);
-                bodyTableCampaign.appendChild(tr);
+                bodyTableCampaign.innerHTML = `<tr><td class="align-middle text-center" colspan="4">No hay campañas</td></tr>`;
                 currentPage = 1;
                 document.querySelector('.pagination').innerHTML = '';
             }
         })
         .catch(error => {
             bodyTableCampaign.innerHTML = '';
-            bodyTableCampaign.innerHTML = '';
-            const tr = document.createElement('tr');
-            const td = document.createElement('td');
-            td.classList.add('align-middle','text-center');
-            td.innerHTML = 'No hay campañas';
-            td.setAttribute('colspan', '4');
-            tr.appendChild(td);
-            bodyTableCampaign.appendChild(tr);
+            bodyTableCampaign.innerHTML = `<tr><td class="align-middle text-center" colspan="4">No hay campañas</td></tr>`;
             currentPage = 1;
             document.querySelector('.pagination').innerHTML = '';
         });
@@ -130,58 +88,32 @@ function loadingTableView() {
     bodyTableCampaign.innerHTML = '';
   
     for (let i = 0; i < 4; i++) {
-      const tr = document.createElement('tr');
-      tr.setAttribute('scope', 'row');
-  
-      for (let j = 0; j < 4; j++) {
-        const td = document.createElement('td');
-        const div = document.createElement('div');
-        div.classList.add('row', 'gx-3');
-  
-        switch (j) {
-          case 0:
-            const div1 = document.createElement('div');
-            const div2 = document.createElement('div');
-            const div3 = document.createElement('div');
-            div1.classList.add('rounded-3', 'shine','me-1');
-            div2.classList.add('rounded-3', 'shine','me-1','col');
-            div3.classList.add('rounded-3', 'shine','me-1','col');
-            div1.setAttribute('style', 'height: 45px; width: 45px;');
-            div2.setAttribute('style', 'height: 30px; width: 80px;');
-            div3.setAttribute('style', 'height: 38px; width: 150px;');
-            div.appendChild(div1);
-            div.appendChild(div2);
-            div.appendChild(div3);
-
-            break;
-          case 1:
-            const div4 = document.createElement('div');
-            div4.classList.add('rounded-3', 'col', 'shine', 'me-1');
-            div4.setAttribute('style', 'height: 30px; width: 150px;');
-            div.appendChild(div4);
-            break;
-          case 2:
-            const div6 = document.createElement('div');
-            div6.classList.add('rounded-3', 'col', 'shine', 'me-1');
-            div6.setAttribute('style', 'height: 20px; width: 100px;');
-            div.appendChild(div6);
-            break;
-          case 3:
-            const div7 = document.createElement('div');
-            div7.classList.add('rounded-3', 'col', 'shine', 'me-1');
-            div7.setAttribute('style', 'height: 30px; width: 50px;');
-            div.appendChild(div7);
-            break;
-          default:
-            break;
-        }
-  
-        td.setAttribute('colspan', '1');
-        td.appendChild(div);
-        tr.appendChild(td);
-      }
-  
-      bodyTableCampaign.appendChild(tr);
+      bodyTableCampaign.innerHTML += `
+            <tr scope="row">
+                <td colspan="1">
+                    <div class="row gx-3">
+                        <div class="rounded-3 shine me-1" style="height: 45px; width: 45px;"></div>
+                        <div class="rounded-3 shine me-1 col" style="height: 30px; width: 80px;"></div>
+                        <div class="rounded-3 shine me-1 col" style="height: 38px; width: 150px;"></div>
+                    </div>
+                </td>
+                <td colspan="1">
+                    <div class="row gx-3">
+                    <div class="rounded-3 col shine me-1" style="height: 30px; width: 150px;"></div>
+                    </div>
+                </td>
+                <td colspan="1">
+                    <div class="row gx-3">
+                        <div class="rounded-3 col shine me-1" style="height: 20px; width: 100px;"></div>
+                    </div>
+                </td>
+                <td colspan="1">
+                    <div class="row gx-3">
+                    <div class="rounded-3 col shine me-1" style="height: 30px; width: 50px;"></div>
+                    </div>
+                </td>
+            </tr>
+      `;
     }
   }
 
