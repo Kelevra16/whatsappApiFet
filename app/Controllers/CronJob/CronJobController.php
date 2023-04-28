@@ -20,10 +20,17 @@ class CronJobController extends BaseController{
         //query para mensajes que hay por enviar en el dia;
         // $total = $messageQueueModel->select("SUM(CASE WHEN status = 'CREADO' THEN 1 ELSE 0 END) + SUM(CASE WHEN status = 'PROGRAMADO' AND DATE(scheduledAt) <= CURDATE() THEN 1 ELSE 0 END) + SUM(CASE WHEN status NOT IN ('CREADO', 'PROGRAMADO') AND DATE(sentAt) = CURDATE() THEN 1 ELSE 0 END) AS Total")->first();
 
-        $totalPendientes = $messageQueueModel->where("status", "PENDIENTE")->orWhere("status", "ENVIADO")->countAllResults();
+        $totalPendientes = $messageQueueModel->where("status", "PENDIENTE")->countAllResults();
 
         if ($totalPendientes > 0) {
             log_message('alert', 'Hay mensajes con estatus pendientes');
+            return;
+        }
+
+        $totalEstEnviado = $messageQueueModel->where("status", "ENVIADO")->where("DATE(sentAt)", "CURDATE()")->countAllResults();
+
+        if($totalEstEnviado > 100){
+            log_message('alert', 'se alcanzo el limite de mensajes con estatus enviado por dia, toca esperar hasta que se liberen los mensajes');
             return;
         }
 
