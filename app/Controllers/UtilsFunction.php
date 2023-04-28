@@ -32,6 +32,11 @@ class UtilsFunction extends BaseController
             return $this->response->setJSON($returnData);
         }
 
+        if($estado->estatus->logueado === true){
+            $idEmpresa = $session->get('idEmpresa');
+            $this->api->createdWedHook($token,$idEmpresa);
+        }
+
         $returnData = [
             'status' => 200,
             'message' => 'Estado de la instancia',

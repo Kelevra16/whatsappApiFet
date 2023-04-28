@@ -17,9 +17,6 @@ class CronJobController extends BaseController{
 
         $starDateJob = date("Y-m-d H:i:s");
 
-        //query para mensajes que hay por enviar en el dia;
-        // $total = $messageQueueModel->select("SUM(CASE WHEN status = 'CREADO' THEN 1 ELSE 0 END) + SUM(CASE WHEN status = 'PROGRAMADO' AND DATE(scheduledAt) <= CURDATE() THEN 1 ELSE 0 END) + SUM(CASE WHEN status NOT IN ('CREADO', 'PROGRAMADO') AND DATE(sentAt) = CURDATE() THEN 1 ELSE 0 END) AS Total")->first();
-
         $totalPendientes = $messageQueueModel->where("status", "PENDIENTE")->countAllResults();
 
         if ($totalPendientes > 0) {
@@ -74,6 +71,20 @@ class CronJobController extends BaseController{
         $campaignModel = new CampaignModel();
 
         $this->api = new ApiWhatsApp();
+
+        $serviceEstatus = $this->api->getEstadoInstancia('qwerefgt84jkyj');
+
+        if($serviceEstatus){
+            if ($serviceEstatus->exito === true && $serviceEstatus->estatus->logueado === false) {
+                log_message('alert', 'No se ha podido iniciar sesión en la instancia se necesita escanear el codigo QR');
+                return;
+            }
+
+            if ($serviceEstatus->exito === false) {
+                log_message('alert', 'No se ha podido iniciar sesión en la instancia');
+                return;
+            }
+        }
 
         foreach ($messageQueues as $messageQueue) {
             $token = $empresaModel->select("tokenApi")->where("id", $messageQueue->idEmpresa)->first();

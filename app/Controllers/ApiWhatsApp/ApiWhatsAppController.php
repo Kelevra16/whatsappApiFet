@@ -361,6 +361,34 @@ class ApiWhatsAppController extends BaseController
         log_message($tipo,json_encode($returnData));
     }
 
+    public function createdWedHook($token, $idEmpresa)
+    {
+        $urlSend = $this->url . $this->assignWebhook . '?token=' . $token;
+        $dataSend = [
+            'webhookUrl' => 'https://mensajes.fec-chiapas.com.mx/webhook/' . $idEmpresa,
+            'enviarNotificacionesEstado' => true
+        ];
+
+        $response = $this->sendToApiPost($urlSend, $dataSend);
+
+        if (!$response) {
+            $this->genErrorLog('UtilsFunction', 'createdWedHook', 'Error al crear el webhook');
+            return false;
+        }
+
+        if ($response->status != 200) {
+            $this->genErrorLog('UtilsFunction', 'createdWedHook', 'Error al crear el webhook');
+            return false;
+        }
+
+        if (!$response->response->exito) {
+            $this->genErrorLog('UtilsFunction', 'createdWedHook', 'Error al crear el webhook');
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 
