@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <div class="row gx-5">
-    <div class="col-6">
+    <div class="col-12 col-sm-12 col-md-10 col-lg-9 col-xl-7">
         <div class="row my-4">
             <div class="col">
                 <div class="card">

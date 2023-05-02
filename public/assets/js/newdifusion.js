@@ -62,7 +62,7 @@ function saveDifusion(){
         if(result.susses){
             Swal.fire({
                 icon: 'success',
-                title: 'Lista de difusión creada',
+                title: (result.message)? result.message : 'Lista de difusión creada',
                 showConfirmButton: true,
               }).then((result) => {
                 window.location.href = '/difusion/created';

@@ -83,6 +83,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Los campos titulo, descripción y ubicación son requeridos',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -102,6 +103,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'El archivo es requerido',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -112,6 +114,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al subir el archivo',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -122,6 +125,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al mover el archivo',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -137,6 +141,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Ya existe una lista con ese nombre',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -164,6 +169,7 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 400,
                 'message' => 'Error al crear la lista de difusion',
+                'error' => true,
                 'susses' => false,
                 'url' => '',
             ];
@@ -175,12 +181,22 @@ class DifusionController extends BaseController
 
         $data = [];
         $total = 0;
-        $error = "";
+        $error = false;
+        $logErrorEntity = new \App\Entities\LogErrorEntity();
+        $logErrorModel = new \App\Models\LogErrorModel();
+        $logErrorEntity->idEmpresa = $idEmpresa;
+        $logErrorEntity->origenText = $idDifusion;
+        $logErrorEntity->tipoOrigen = 2;
+
         foreach ($sheetData as $key => $value) {
             if ($key > 0) {
 
                 if (!isset($value[0]) && !isset($value[1]) && !isset($value[2])) {
-                    $error = "Hay campos vacíos que serán omitidos";
+                    $error = true;
+                    $logErrorEntity->error = "Algunos contactos que no tienen los datos necesarios, serán omitidos, en la lista de difusión $nombre id $idDifusion";
+                    $logErrorEntity->fecha = date('Y-m-d H:i:s');
+                    $logErrorEntity->tipoError = "ALERTA";
+                    $logErrorModel->insert($logErrorEntity);
                     continue;
                 }
 
@@ -188,17 +204,35 @@ class DifusionController extends BaseController
                 $lada = intval(preg_replace("/[^0-9]/", '',  $value[0]));
 
                 if(!is_numeric($telefono) || !is_numeric($lada)){
-                    $error = "Hay campos que no son números que serán omitidos";
+                    $error = true;
+                    $logErrorEntity->error = "Hay campos que no son números que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                    $logErrorEntity->fecha = date('Y-m-d H:i:s');
+                    $logErrorEntity->tipoError = "ALERTA";
+                    $logErrorModel->insert($logErrorEntity);
                     continue;
                 }
 
+                $existContact = $contactoModel->where('telefono', $telefono)->where('lada', $lada)->where('idGrupoDifucion', $idDifusion)->first();
+
+                if ($existContact) {
+                    $error = true;
+                    $logErrorEntity->error = "El contacto $lada $telefono ya existe en la lista de difusión $nombre id $idDifusion";
+                    $logErrorEntity->fecha = date('Y-m-d H:i:s');
+                    $logErrorEntity->tipoError = "ALERTA";
+                    $logErrorModel->insert($logErrorEntity);
+                    continue;
+                }
 
                 try {
                    $swissNumberStr = '+' . $lada . $telefono;
                     $swissNumberProto = $phoneUtil->parse($swissNumberStr);
                     $isValid = $phoneUtil->isValidNumber($swissNumberProto);
                     if (!$isValid) {
-                        $error = "Hay campos que no son números válidos que serán omitidos";
+                        $error = true;
+                        $logErrorEntity->error = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                        $logErrorEntity->fecha = date('Y-m-d H:i:s');
+                        $logErrorEntity->tipoError = "ALERTA";
+                        $logErrorModel->insert($logErrorEntity);
                         continue;
                     }
 
@@ -211,7 +245,11 @@ class DifusionController extends BaseController
                     }
 
                 } catch (\libphonenumber\NumberParseException $e) {
-                    $error = "Hay campos que no son números válidos que serán omitidos";
+                    $error = true;
+                    $logErrorEntity->error = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                    $logErrorEntity->fecha = date('Y-m-d H:i:s');
+                    $logErrorEntity->tipoError = "ALERTA";
+                    $logErrorModel->insert($logErrorEntity);
                     continue;
                 }
 
@@ -245,15 +283,39 @@ class DifusionController extends BaseController
         $difusionEntity->totalContactos = $total;
         $difusionEntity->id = $idDifusion;
 
+        if($total == 0){
+            $returnData = [
+                'status' => 400,
+                'message' => 'No se pudo crear la lista de difusión, no se encontraron contactos validos',
+                'error' => $error,
+                'susses' => false,
+                'url' => '',
+            ];
+
+            $difusionModel->delete($idDifusion);
+
+            return $this->response->setJSON($returnData);
+        }
+
         $difusionModel->save($difusionEntity);
 
-        $returnData = [
-            'status' => 200,
-            'message' => 'Lista de difusion creada',
-            'error' => $error,
-            'susses' => true,
-            'url' => '',
-        ];
+        if ($error) {
+            $returnData = [
+                'status' => 200,
+                'message' => 'Se creo la lista de difusión, pero algunos contactos no se pudieron agregar por no ser validos, se genero un registro con los errores',
+                'error' => $error,
+                'susses' => true,
+                'url' => '',
+            ];
+        }else{
+            $returnData = [
+                'status' => 200,
+                'message' => 'Lista de difusion creada',
+                'error' => $error,
+                'susses' => true,
+                'url' => '',
+            ];
+        }
 
         return $this->response->setJSON($returnData);
     }
@@ -501,10 +563,12 @@ class DifusionController extends BaseController
                 'status' => 200,
                 'message' => $errorMessage,
                 'susses' => false,
-                'url' => '',
+                'data' => '',
             ];
             return $this->response->setJSON($returnData);
         }
+
+
 
         $idDifucion = $this->request->getVar('idDifucion');
         $name = $this->request->getVar('nombre');
@@ -537,7 +601,19 @@ class DifusionController extends BaseController
             $returnData = [
                 'status' => 200,
                 'message' => 'El contacto ya existe en la lista de difusión',
-                'susses' => true,
+                'susses' => false,
+                'data' => '',
+            ];
+            return $this->response->setJSON($returnData);
+        }
+
+        $isValid = $this->validateContactNumber($telefono, $lada);
+
+        if (!$isValid) {
+            $returnData = [
+                'status' => 200,
+                'message' => 'El número de teléfono no es valido',
+                'susses' => false,
                 'data' => '',
             ];
             return $this->response->setJSON($returnData);
@@ -578,5 +654,36 @@ class DifusionController extends BaseController
 
         return $this->response->setJSON($returnData);
 
+    }
+
+    /**
+     * 
+     * @param mixed $lada 
+     * @param mixed $telefono 
+     * @return bool 
+     */
+    private function validateContactNumber($lada,$telefono){
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+        try {
+            $swissNumberStr = '+' . $lada . $telefono;
+             $swissNumberProto = $phoneUtil->parse($swissNumberStr);
+             $isValid = $phoneUtil->isValidNumber($swissNumberProto);
+             if (!$isValid) {
+                 return false;
+             }
+
+             $region = $phoneUtil->getRegionCodeForNumber($swissNumberProto);
+
+             if ($region == 'MX') {
+                 if ($lada != '521') {
+                     $lada = '521';
+                 }
+             }
+            
+             return true;
+
+         } catch (\libphonenumber\NumberParseException $e) {
+             return false;
+         }
     }
 }

@@ -109,6 +109,7 @@ class CronJobController extends BaseController{
                 $messageQueue->lastError = "Error al enviar el mensaje";
                 $messageQueue->retryCount = $messageQueue->retryCount + 1;
                 $messageQueueModel->save($messageQueue);
+                $this->logErrorContact("El servicio ha marcado un error al intentar comunicarse",$messageQueue);
                 continue;
             }
 
@@ -124,6 +125,8 @@ class CronJobController extends BaseController{
                 $campaign = $campaignModel->where("id", $messageQueue->idCampaign)->first();
                 $campaign->totalError = $campaign->totalError + 1;
                 $campaignModel->save($campaign);
+
+                $this->logErrorContact($respuesta->mensajeError,$messageQueue);
                 
                 continue;
             }
@@ -134,6 +137,24 @@ class CronJobController extends BaseController{
             $messageQueueModel->save($messageQueue);
 
         }
+
+    }
+
+    private function logErrorContact($mensajeError,$messageQueue){
+        $logErrorEntity = new \App\Entities\LogErrorEntity();
+        $logErrorModel = new \App\Models\LogErrorModel();
+        $campaignModel = new CampaignModel();
+        $campaignInfo = $campaignModel->where("id", $messageQueue->idCampaign)->first();
+
+        $logErrorEntity->idEmpresa = $messageQueue->idEmpresa;
+        $logErrorEntity->tipoOrigen = 1;
+        $logErrorEntity->origenText = $messageQueue->idCampaign;
+        $logErrorEntity->fecha = date("Y-m-d H:i:s");
+        $logErrorEntity->mensaje = "se ha producido un error al enviar la campaña ".$campaignInfo->titulo." con el id ".$campaignInfo->id." al numero ".$messageQueue->phone." Error: ".$mensajeError;
+        $logErrorEntity->tipoError = "ERROR";
+        $logErrorEntity->visto = 0;
+
+        $logErrorModel->save($logErrorEntity);
 
     }
 

@@ -46,6 +46,7 @@ function getListCampaign(cuPage = 1){
                             <button class="btn btt-green-circle mx-1">${element.status}</button>
                         </td>
                         <td class="align-middle">
+                        <button class="btn btt-blue-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ver registro" onclick="viewCamping(${element.id})"><i class="bi bi-eye"></i></button>
                         <button class="btn btt-red-cancel" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar campaña" onclick="deleteCampaign(${element.id })"><i class="bi bi-trash"></i></button>
                     </td>
                     </tr>
@@ -115,8 +116,7 @@ function loadingTableView() {
             </tr>
       `;
     }
-  }
-
+}
 
 const paginate = (pagesMax, selector) => {
     const currentPageLocal = currentPage;
@@ -196,7 +196,6 @@ const paginate = (pagesMax, selector) => {
     document.querySelector(selector).innerHTML = html
 }
 
-
 function deleteCampaign(idCampaign){
     Swal.fire({
         title: '¿Estás seguro?',
@@ -258,4 +257,8 @@ function deleteCampaign(idCampaign){
                 });
         }
     })
+}
+
+function viewCamping(idCampaign){
+    window.location.href = `/campaign/viewCampaign/${idCampaign}`;
 }

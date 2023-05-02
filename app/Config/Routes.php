@@ -61,6 +61,8 @@ $routes->group('campaign', function($routes) {
     $routes->post('list/(:num)', 'Campaign\CampaignController::getListCampaign/$1');
     $routes->post('save', 'Campaign\CampaignController::saveCampaign');
     $routes->post('deleteCampaign', 'Campaign\CampaignController::deleteCampaign');
+    $routes->get('viewCampaign/(:num)', 'Campaign\CampaignController::viewCampaign/$1');
+    $routes->post('view/contactsList/(:num)', 'Campaign\CampaignController::listContacts/$1');
 });
 
 $routes->group('myaccount',function($routes){
@@ -103,6 +105,13 @@ $routes->group('usuarios', function($routes) {
     $routes->get('new', 'Usuarios\UsuariosController::newUser');
     $routes->post('save', 'Usuarios\UsuariosController::saveUser');
     $routes->post('delete', 'Usuarios\UsuariosController::deleteUser');
+});
+
+$routes->group('logError', function($routes) {
+    $routes->get('/', 'LogController::index');
+    $routes->post('list', 'LogController::getListLog');
+    $routes->post('list/(:num)', 'LogController::getListLog/$1');
+    $routes->get('view/(:num)', 'LogController::viewLogInfo/$1');
 });
 
 /*

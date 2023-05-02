@@ -43,6 +43,11 @@
                             </li>
                         <?php } ?>
 
+                        <li class="nav-item col-12 my-1">
+                            <a href="/logError" class="nav-link <?php echo ($section === 'log')? "active-green":"" ?> align-middle text-black-grey">
+                            <i class="bi bi-exclamation-triangle"></i> <span class="ms-1 d-none d-lg-inline">Registro Errores</span></a>
+                        </li>
+
                         <!-- <li class="nav-item col-12 my-1">
                             <a href="#" class="nav-link align-middle text-black-grey">
                                 <img class="svgFontSize" src="/assets/img/dashboard/bar_chart.svg" alt="barChar"> <span class="ms-1 d-none d-lg-inline">Estadísticas</span> </a>

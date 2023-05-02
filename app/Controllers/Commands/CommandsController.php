@@ -3,6 +3,7 @@
 namespace App\Controllers\Commands;
 
 use App\Controllers\BaseController;
+use App\Models\CampaignModel;
 
 class CommandsController extends BaseController
 {
@@ -269,6 +270,11 @@ class CommandsController extends BaseController
     }
 
     private function commandExecution($posts,$idEmpresa){
+
+        if(!$posts->message->text){
+            return;
+        }
+
         $comando = html_entity_decode($posts->message->text);
 
         $commandModel = new \App\Models\CommandModel();
@@ -300,7 +306,7 @@ class CommandsController extends BaseController
 
     private function updateStatus($post,$idEmpresa){
         $messageQueueModel = new \App\Models\MessageQueueModel();
-        $campaignModel = new \App\Models\CampaignModel();
+        $campaignModel = new CampaignModel();
 
         foreach ($post->data as $data) {
             $msgId = $data->msgId;
@@ -432,7 +438,7 @@ class CommandsController extends BaseController
 
     private function statusError($post,$idEmpresa){
         $messageQueueModel = new \App\Models\MessageQueueModel();
-        $campaignModel = new \App\Models\CampaignModel();
+        $campaignModel = new CampaignModel();
 
         if (!$post->data) {
             $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
@@ -451,6 +457,7 @@ class CommandsController extends BaseController
             $campaign = $campaignModel->find($messageQueue->idCampaign);
             $campaign->totalError = $campaign->totalError + 1;
             $campaignModel->save($campaign);
+            $this->logErrorContact($post->message,$messageQueue);
             $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
             log_message('alert','Mensaje actualizado: '.$postString);
         }else{
@@ -475,10 +482,30 @@ class CommandsController extends BaseController
             $campaign = $campaignModel->find($messageQueue2->idCampaign);
             $campaign->totalError = $campaign->totalError + 1;
             $campaignModel->save($campaign);
+            $this->logErrorContact($post->message,$messageQueue2);
             $postString = json_encode($post,JSON_UNESCAPED_UNICODE);
             log_message('alert','Mensaje actualizado: '.$postString);
         }
 
+
+    }
+
+
+    private function logErrorContact($mensajeError,$messageQueue){
+        $logErrorEntity = new \App\Entities\LogErrorEntity();
+        $logErrorModel = new \App\Models\LogErrorModel();
+        $campaignModel = new CampaignModel();
+        $campaignInfo = $campaignModel->where("id", $messageQueue->idCampaign)->first();
+
+        $logErrorEntity->idEmpresa = $messageQueue->idEmpresa;
+        $logErrorEntity->tipoOrigen = 1;
+        $logErrorEntity->origenText = $messageQueue->idCampaign;
+        $logErrorEntity->fecha = date("Y-m-d H:i:s");
+        $logErrorEntity->mensaje = "se ha producido un error al enviar la campaña ".$campaignInfo->titulo." con el id ".$campaignInfo->id." al numero ".$messageQueue->phone." Error: ".$mensajeError;
+        $logErrorEntity->tipoError = "ERROR";
+        $logErrorEntity->visto = 0;
+
+        $logErrorModel->save($logErrorEntity);
 
     }
 }

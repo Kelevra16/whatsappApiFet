@@ -252,7 +252,7 @@ class CampaignController extends BaseController
     private function getContactsByGroups($arrayGroups)
     {
         $contactoModel = new \App\Models\ContactosModel();
-        $contactos = $contactoModel->whereIn('idGrupoDifucion', $arrayGroups)->findAll();
+        $contactos = $contactoModel->whereIn('idGrupoDifucion', $arrayGroups)->groupBy(['lada','telefono'])->findAll();
         return $contactos;
     }
 
@@ -653,6 +653,80 @@ class CampaignController extends BaseController
             ];
             return $this->response->setJSON($returnData);
         }
+    }
+
+    public function viewCampaign($idCampaign)
+    {
+        $session = \Config\Services::session();
+        $idEmpresa = $session->get('idEmpresa');
+        $idUsuario = $session->get('idUser');
+        $role = $session->get('role');
+
+        $campaignModel = new \App\Models\CampaignModel();
+        $campaign = $campaignModel->where('idEmpresa',$idEmpresa)->where('id',$idCampaign)->first();
+
+        if(!$campaign){
+            return redirect()->to(base_url('/campaign'));
+        }
+
+        $data = [
+                'title' => 'Ver campaña',
+                'section' => 'campaña',
+                'session' => $session,
+                'campaign' => $campaign
+        ];
+    
+        return  view('page/parts/head', $data)
+                .   view('page/campaign/viewCampaign_view')
+                .   view('page/parts/footer');
+
+    }
+
+    public function listContacts($page = 1)
+    {
+        $session = \Config\Services::session();
+        $currentPage = $page;
+        $request = \Config\Services::request();
+        $idCampaign = $request->getPost('idCampaign');
+
+        $messageQueueModel = new \App\Models\MessageQueueModel();
+        $contactoModel = new \App\Models\ContactosModel();
+        $messageQueues = $messageQueueModel->where('idCampaign',$idCampaign)->paginate(10,'default',$currentPage);
+
+        if (!$messageQueues) {
+            $returnData = [
+                'status' => 400,
+                'message' => 'No se encontraron contactos',
+                'susses' => false,
+                'data' => []
+            ];
+            return $this->response->setJSON($returnData);
+        }
+        $listContact = [];
+        foreach ($messageQueues as $key => $messageQueue) {
+            $contacto = $contactoModel->where('id',$messageQueue->idContact)->first();
+            if (!$contacto) {
+                continue;
+            }
+
+            $listContact[] = [
+                'name' => $contacto->nombre,
+                'phone' => $contacto->telefono,
+                'lada' => $contacto->lada,
+                'status' => $messageQueue->status,
+                'lastError' => $messageQueue->lastError,
+            ];
+        }
+
+        $returnData = [
+            'status' => 200,
+            'message' => 'Contactos encontrados',
+            'susses' => true,
+            'data' => $listContact,
+            'page' => $messageQueueModel->pager->getPageCount()
+        ];
+
+        return $this->response->setJSON($returnData);
     }
 
 }
