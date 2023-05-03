@@ -193,7 +193,7 @@ class DifusionController extends BaseController
 
                 if (!isset($value[0]) && !isset($value[1]) && !isset($value[2])) {
                     $error = true;
-                    $logErrorEntity->error = "Algunos contactos que no tienen los datos necesarios, serán omitidos, en la lista de difusión $nombre id $idDifusion";
+                    $logErrorEntity->mensaje = "Algunos contactos que no tienen los datos necesarios, serán omitidos, en la lista de difusión $nombre id $idDifusion";
                     $logErrorEntity->fecha = date('Y-m-d H:i:s');
                     $logErrorEntity->tipoError = "ALERTA";
                     $logErrorModel->insert($logErrorEntity);
@@ -205,7 +205,7 @@ class DifusionController extends BaseController
 
                 if(!is_numeric($telefono) || !is_numeric($lada)){
                     $error = true;
-                    $logErrorEntity->error = "Hay campos que no son números que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                    $logErrorEntity->mensaje = "Hay campos que no son números que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
                     $logErrorEntity->fecha = date('Y-m-d H:i:s');
                     $logErrorEntity->tipoError = "ALERTA";
                     $logErrorModel->insert($logErrorEntity);
@@ -216,7 +216,7 @@ class DifusionController extends BaseController
 
                 if ($existContact) {
                     $error = true;
-                    $logErrorEntity->error = "El contacto $lada $telefono ya existe en la lista de difusión $nombre id $idDifusion";
+                    $logErrorEntity->mensaje = "El contacto $lada $telefono ya existe en la lista de difusión $nombre id $idDifusion";
                     $logErrorEntity->fecha = date('Y-m-d H:i:s');
                     $logErrorEntity->tipoError = "ALERTA";
                     $logErrorModel->insert($logErrorEntity);
@@ -229,7 +229,7 @@ class DifusionController extends BaseController
                     $isValid = $phoneUtil->isValidNumber($swissNumberProto);
                     if (!$isValid) {
                         $error = true;
-                        $logErrorEntity->error = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                        $logErrorEntity->mensaje = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
                         $logErrorEntity->fecha = date('Y-m-d H:i:s');
                         $logErrorEntity->tipoError = "ALERTA";
                         $logErrorModel->insert($logErrorEntity);
@@ -246,7 +246,7 @@ class DifusionController extends BaseController
 
                 } catch (\libphonenumber\NumberParseException $e) {
                     $error = true;
-                    $logErrorEntity->error = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
+                    $logErrorEntity->mensaje = "Hay campos que no son números válidos que serán omitidos, en la lista de difusión $nombre id $idDifusion, telefono $telefono, lada $lada";
                     $logErrorEntity->fecha = date('Y-m-d H:i:s');
                     $logErrorEntity->tipoError = "ALERTA";
                     $logErrorModel->insert($logErrorEntity);
@@ -536,7 +536,6 @@ class DifusionController extends BaseController
         $session = \Config\Services::session();
         $idUsuario = $session->get('idUser');
         $idEmpresa = $session->get('idEmpresa');
-
         
         $inputs = $this->validate([
             'nombre' => 'required|min_length[3]',
@@ -589,6 +588,9 @@ class DifusionController extends BaseController
                 'susses' => false,
                 'data' => '',
             ];
+
+            $this->logErrorContact("No se encontró la lista de difusión",$idEmpresa,$idDifucion,"ERROR");
+
             return $this->response->setJSON($returnData);
         }
 
@@ -604,6 +606,8 @@ class DifusionController extends BaseController
                 'susses' => false,
                 'data' => '',
             ];
+
+            $this->logErrorContact("El Numero $telefono ya se encuentra registrado en la lista de difucion $difusion->nombre con id $difusion->id",$idEmpresa,$idDifucion,"ALERTA");
             return $this->response->setJSON($returnData);
         }
 
@@ -616,6 +620,7 @@ class DifusionController extends BaseController
                 'susses' => false,
                 'data' => '',
             ];
+            $this->logErrorContact("El Numero $telefono no es valido y no se registro en la lista de difucion $difusion->nombre con id $difusion->id",$idEmpresa,$idDifucion,"ALERTA");
             return $this->response->setJSON($returnData);
         }
 
@@ -634,10 +639,12 @@ class DifusionController extends BaseController
         if (!$idContacto) {
             $returnData = [
                 'status' => 400,
-                'message' => 'Error al crear el contacto',
+                'message' => 'Error al intentar guardar el contacto',
                 'susses' => false,
                 'data' => '',
             ];
+
+            $this->logErrorContact("El Numero $telefono no se pudo guardar en la lista de difucion $difusion->nombre con id $difusion->id",$idEmpresa,$idDifucion,"ERROR");
             return $this->response->setJSON($returnData);
         }
 
@@ -647,7 +654,7 @@ class DifusionController extends BaseController
 
         $returnData = [
             'status' => 200,
-            'message' => 'Contacto creado',
+            'message' => '¡El contacto se ha agregado correctamente!',
             'susses' => true,
             'data' => '',
         ];
@@ -685,5 +692,21 @@ class DifusionController extends BaseController
          } catch (\libphonenumber\NumberParseException $e) {
              return false;
          }
+    }
+
+    private function logErrorContact($mensajeError,$idEmpresa,$origenText,$tipo){
+        $logErrorEntity = new \App\Entities\LogErrorEntity();
+        $logErrorModel = new \App\Models\LogErrorModel();
+
+        $logErrorEntity->idEmpresa = $idEmpresa;
+        $logErrorEntity->tipoOrigen = 2;
+        $logErrorEntity->origenText = $origenText;
+        $logErrorEntity->fecha = date("Y-m-d H:i:s");
+        $logErrorEntity->mensaje = $mensajeError;
+        $logErrorEntity->tipoError = $tipo;
+        $logErrorEntity->visto = 0;
+
+        $logErrorModel->save($logErrorEntity);
+
     }
 }

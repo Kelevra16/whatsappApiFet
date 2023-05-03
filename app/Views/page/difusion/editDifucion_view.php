@@ -126,5 +126,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/editdifucion.js?v=1.0.4"></script>
+<script src="/assets/js/editdifucion.js?v=1.0.5"></script>
 <?= $this->endSection() ?>

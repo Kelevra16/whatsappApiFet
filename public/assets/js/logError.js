@@ -268,3 +268,9 @@ const viewLog = (id) => {
             });
         });
 }
+
+function changePage(page){
+    currentPage = page;
+    loadingTableView();
+    getListLog(page);
+}

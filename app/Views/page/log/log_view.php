@@ -7,8 +7,9 @@
         <div class="card-title d-flex justify-content-between align-items-center">
             <h5 class="">Registro de errores</h5>
         </div>
+        <div class="pagination justify-content-end"></div>
     </div>
-    <div class="pagination justify-content-end"></div>
+    
     <div class="card-body px-4 pt-4 mt-2 mx-2">
         <div class="table-responsive">
             <table class="table">
@@ -71,5 +72,5 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsExtra') ?>
-<script src="/assets/js/logError.js"></script>
+<script src="/assets/js/logError.js?v=1.0.1"></script>
 <?= $this->endSection() ?>

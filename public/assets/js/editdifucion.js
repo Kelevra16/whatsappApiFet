@@ -359,10 +359,11 @@ const saveContacto = () => {
                 puesto.value = '';
                 email.value = '';
             } else {
+                
                 Swal.fire({
                     icon: 'error',
                     title: '¡Error!',
-                    text: '¡Ha ocurrido un error al agregar el contacto!',
+                    text: (result.message) ? result.message : '¡Ha ocurrido un error al agregar el contacto!',
                 });
             }
         })
