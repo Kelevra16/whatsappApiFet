@@ -192,8 +192,12 @@ class DifusionController extends BaseController
             if ($key > 0) {
 
                 if (!isset($value[0]) && !isset($value[1]) && !isset($value[2])) {
+                    continue;
+                }
+
+                if (!isset($value[0]) || !isset($value[1]) || !isset($value[2])) {
                     $error = true;
-                    $logErrorEntity->mensaje = "Algunos contactos que no tienen los datos necesarios, serán omitidos, en la lista de difusión $nombre id $idDifusion";
+                    $logErrorEntity->mensaje = "Uno de los campos requeridos se encuentra vació se pasara a omitir, lada:$value[0], numero:$value[1], nombre:$value[2], en la lista de difusión $nombre id $idDifusion";
                     $logErrorEntity->fecha = date('Y-m-d H:i:s');
                     $logErrorEntity->tipoError = "ALERTA";
                     $logErrorModel->insert($logErrorEntity);
