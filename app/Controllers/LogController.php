@@ -89,9 +89,9 @@ class LogController extends BaseController{
 
             if ($log->tipoOrigen == 1 ){
                 if ($role <= 1) {
-                    $campaign = $campaignModel->where('idEmpresa', $idEmpresa)->find($log->origenText);
+                    $campaign = $campaignModel->where('idEmpresa', $idEmpresa)->withDeleted()->find($log->origenText);
                 } else {
-                    $campaign = $campaignModel->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->find($log->origenText);
+                    $campaign = $campaignModel->where('idEmpresa', $idEmpresa)->withDeleted()->where('created_by', $idUsuario)->find($log->origenText);
                 }
 
                 if(!$campaign){
@@ -117,9 +117,9 @@ class LogController extends BaseController{
 
             if ($log->tipoOrigen == 2 ){
                 if ($role <= 1) {
-                    $difucion = $grupoDifucion->where('idEmpresa', $idEmpresa)->find($log->origenText);
+                    $difucion = $grupoDifucion->where('idEmpresa', $idEmpresa)->withDeleted()->find($log->origenText);
                 } else {
-                    $difucion = $grupoDifucion->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->find($log->origenText);
+                    $difucion = $grupoDifucion->where('idEmpresa', $idEmpresa)->withDeleted()->where('created_by', $idUsuario)->find($log->origenText);
                 }
 
                 if(!$difucion){
