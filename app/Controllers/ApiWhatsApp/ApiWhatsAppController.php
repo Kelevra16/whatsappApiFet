@@ -143,7 +143,7 @@ class ApiWhatsAppController extends BaseController
         $urlSend = $this->url . $this->sendFile . '?token=' . $token;
         $dataJson = json_decode($data);
 
-        $mensaje = $dataJson->mensaje . "\n" . "Para darte de baja de nuestro servicio envía la palabra *BAJA*";
+        $mensaje = $dataJson->textoimagen . "\n" . "Para darte de baja de nuestro servicio envía la palabra *BAJA*";
 
         $dataSend = [
             'numero' => $dataJson->numero,
