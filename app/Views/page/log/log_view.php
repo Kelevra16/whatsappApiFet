@@ -7,9 +7,24 @@
         <div class="card-title d-flex justify-content-between align-items-center">
             <h5 class="">Registro de errores</h5>
         </div>
+
+        <div class="row g-3">
+            <div class="col-auto">
+                <label for="staticFecha" class="visually-hidden">Fecha</label>
+                <input type="text" readonly class="form-control-plaintext" id="staticFecha" value="Fecha">
+            </div>
+            <div class="col-auto">
+                <label for="inputDate" class="visually-hidden">Fecha</label>
+                <input type="date" class="form-control" id="inputDate">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" onclick="filter();">Filtrar</button>
+            </div>
+        </div>
+
         <div class="pagination justify-content-end"></div>
     </div>
-    
+
     <div class="card-body px-4 pt-4 mt-2 mx-2">
         <div class="table-responsive">
             <table class="table">

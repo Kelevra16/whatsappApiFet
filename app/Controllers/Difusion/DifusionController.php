@@ -615,7 +615,7 @@ class DifusionController extends BaseController
             return $this->response->setJSON($returnData);
         }
 
-        $isValid = $this->validateContactNumber($telefono, $lada);
+        $isValid = $this->validateContactNumber($lada,$telefono);
 
         if (!$isValid) {
             $returnData = [

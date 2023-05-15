@@ -101,7 +101,16 @@ class ApiWhatsAppController extends BaseController
     {
         $urlSend = $this->url . $this->sendTextMessage . '?token=' . $token;
         
-        $dataSend = json_decode($data);
+        $dataJson = json_decode($data);
+
+        $mensaje = $dataJson->mensaje;
+        $mensaje += "\n";
+        $mensaje += "Para darte de baja de nuestro servicio envía la palabra *BAJA*";
+
+        $dataSend = [
+            'numero' => $dataJson->numero,
+            'mensaje' => $mensaje,
+        ];
 
         try {
             $response = $this->sendToApiPost($urlSend, $dataSend);
@@ -134,7 +143,17 @@ class ApiWhatsAppController extends BaseController
     public function sendWhatsAppImage($data, string $token)
     {
         $urlSend = $this->url . $this->sendFile . '?token=' . $token;
-        $dataSend = json_decode($data);
+        $dataJson = json_decode($data);
+
+        $mensaje = $dataJson->mensaje;
+        $mensaje += "\n";
+        $mensaje += "Para darte de baja de nuestro servicio envía la palabra *BAJA*";
+
+        $dataSend = [
+            'numero' => $dataJson->numero,
+            'url' => $dataJson->url,
+            'textoimagen' => $mensaje,
+        ];
 
         try {
             $response = $this->sendToApiPost($urlSend, $dataSend);

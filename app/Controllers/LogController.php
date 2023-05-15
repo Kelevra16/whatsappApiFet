@@ -36,11 +36,17 @@ class LogController extends BaseController{
         $grupoDifucion = new GrupoDifucionModel();
         $campaignModel = new CampaignModel();
 
+        $fecha = $this->request->getVar('fecha');
+
+        if ($fecha == '') {
+            $fecha = date('Y-m-d');
+        }
+
         $logs = [];
 
 
         if ($role <= 1) {
-                $logs = $logModel->where('idEmpresa', $idEmpresa)->orderBy('id', 'DESC')->paginate(10,'default',$currentPage);
+                $logs = $logModel->where('idEmpresa', $idEmpresa)->where("DATE_FORMAT(fecha, '%Y-%m-%d')", $fecha)->orderBy('id', 'DESC')->paginate(10,'default',$currentPage);
             } else {
                 
                 $difuciones = $grupoDifucion->select('id')->where('idEmpresa', $idEmpresa)->where('created_by', $idUsuario)->findAll();
@@ -53,7 +59,7 @@ class LogController extends BaseController{
                 foreach ($campaigns as $campaign) {
                     array_push($idCampaigns, $campaign['id']);
                 }
-                $logs = $logModel->where('idEmpresa', $idEmpresa)->where('tipoOrigen', 1)->whereIn('origenText', $idDifuciones)->orWhere('tipoOrigen', 2)->whereIn('origenText', $idCampaigns)->orderBy('id', 'DESC')->paginate(10,'default',$currentPage);
+                $logs = $logModel->where("DATE_FORMAT(fecha, '%Y-%m-%d')", $fecha)->where('idEmpresa', $idEmpresa)->where('tipoOrigen', 1)->whereIn('origenText', $idDifuciones)->orWhere('tipoOrigen', 2)->where("DATE_FORMAT(fecha, '%Y-%m-%d')", $fecha)->whereIn('origenText', $idCampaigns)->orderBy('id', 'DESC')->paginate(10,'default',$currentPage);
             }
     
         $returnData = [

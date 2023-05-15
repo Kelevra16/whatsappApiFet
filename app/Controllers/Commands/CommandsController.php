@@ -95,6 +95,49 @@ class CommandsController extends BaseController
 
     }
 
+    private function commandUnsubscribe($idEmpresa,$phone,$lada){
+        $empresaModel = new \App\Models\EmpresaModel();
+        $empresa = $empresaModel->find($idEmpresa);
+        $token = $empresa->tokenApi;
+        $contactModel = new \App\Models\ContactosModel();
+        $grupoDifucionModel = new \App\Models\GrupoDifucionModel();
+        $contactList = $contactModel->where('telefono',$phone)->where('lada',$lada)->findAll();
+
+        if(!$contactList){
+            $message = "No se encontró una suscripción activa";
+            log_message('alert','No se encontró una suscripción activa');
+            $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+            return;
+        }
+
+        $isDelete = false;
+        foreach ($contactList as $contact) {
+            $grupoDifucion = $grupoDifucionModel->where('id',$contact->idGrupoDifucion)->where("idEmpresa",$idEmpresa)->first();
+
+            if(!$grupoDifucion){
+                log_message('alert','No se encontró el grupo de difusión');
+                continue;
+            }
+
+            $totalGrupoDifucion = $grupoDifucion->totalContactos - 1;
+            $grupoDifucionModel->update($contact->idGrupoDifucion,["totalContactos"=>$totalGrupoDifucion]);
+            $isDelete = $contactModel->delete($contact->id);
+        }
+
+
+
+        if(!$isDelete){
+            $message = "Ocurrió un problema al dar de baja la suscripción, inténtalo mas tarde";
+            log_message('alert','No se encontró el contacto');
+            $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+            return;
+        }
+
+        $message = "Se ha eliminado tu suscripción";
+        log_message('alert',"Se ha eliminado tu suscripción");
+        $this->sendOnlyTextNoResponse($token,$message,$phone,$lada);
+        return;
+    }
 
     private function commandSubscription($idEmpresa,$phone,$lada,$nombre,$action){
 
@@ -276,6 +319,16 @@ class CommandsController extends BaseController
         }
 
         $comando = html_entity_decode($posts->message->text);
+
+        if($comando == "Baja" || $comando == "baja" || $comando == "BAJA"){
+            $telefonoCompleto = $posts->user->phone;
+            $nombre = $posts->user->name;
+            $calculateLada = strlen($telefonoCompleto) - 10;
+            $lada = substr($telefonoCompleto, 0, $calculateLada);
+            $phone = substr($telefonoCompleto, 3, 10);
+            $this->commandUnsubscribe($idEmpresa,$lada,$phone);
+            return;
+        }
 
         $commandModel = new \App\Models\CommandModel();
 

@@ -7,9 +7,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 const getListLog = async (cuPage = 1) => {
     const bodyTableLog = document.getElementById("bodyTableLog");
+    const inputDate = document.getElementById("inputDate").value;
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("fecha", inputDate);
 
     var requestOptions = {
         method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
         redirect: "follow",
     };
 
@@ -63,6 +72,9 @@ const getListLog = async (cuPage = 1) => {
         });
 };
 
+const filter = () => {
+    getListLog(1);
+};
 
 function loadingTableView() {
     const bodyTableLog = document.getElementById("bodyTableLog");
