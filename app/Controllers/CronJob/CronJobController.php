@@ -89,6 +89,16 @@ class CronJobController extends BaseController{
         foreach ($messageQueues as $messageQueue) {
             $token = $empresaModel->select("tokenApi")->where("id", $messageQueue->idEmpresa)->first();
 
+            $campaign = $campaignModel->where("id", $messageQueue->idCampaign)->first();
+
+            if($campaign->status == "ERROR"){
+                $messageQueue->lastError = "La campaña se encuentra en estado de error";
+                $messageQueue->status = "ERROR";
+                $messageQueue->sentAt = date("Y-m-d H:i:s");
+                $messageQueueModel->save($messageQueue);
+                continue;
+            }
+
             $respuesta = false;
 
             switch ($messageQueue->messageType) {
