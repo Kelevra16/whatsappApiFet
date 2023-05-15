@@ -26,7 +26,7 @@ class CronJobController extends BaseController{
 
         $totalEstEnviado = $messageQueueModel->where("status", "ENVIADO")->where("DATE(sentAt)", "CURDATE()")->countAllResults();
 
-        if($totalEstEnviado > 100){
+        if($totalEstEnviado > 400){
             log_message('alert', 'se alcanzo el limite de mensajes con estatus enviado por dia, toca esperar hasta que se liberen los mensajes');
             return;
         }
