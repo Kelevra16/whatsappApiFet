@@ -320,13 +320,13 @@ class CommandsController extends BaseController
 
         $comando = html_entity_decode($posts->message->text);
 
-        if($comando == "Baja" || $comando == "baja" || $comando == "BAJA"){
+        if($comando == "Baja" || $comando == "baja" || $comando == "BAJA" || $comando == "*BAJA*"){
             $telefonoCompleto = $posts->user->phone;
             $nombre = $posts->user->name;
             $calculateLada = strlen($telefonoCompleto) - 10;
             $lada = substr($telefonoCompleto, 0, $calculateLada);
             $phone = substr($telefonoCompleto, 3, 10);
-            $this->commandUnsubscribe($idEmpresa,$lada,$phone);
+            $this->commandUnsubscribe($idEmpresa,$phone,$lada);
             return;
         }
 

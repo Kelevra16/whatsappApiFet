@@ -87,6 +87,15 @@ class CronJobController extends BaseController{
         }
 
         foreach ($messageQueues as $messageQueue) {
+            $arrNumber = [9616670420,9611503534,9612694001,9616403347,9611933050,9671012777,9616938712,9621118896,9616552720,9611775973,9616680728,9612626326,9611787126,9671147782,9626063140,9621352028,9616543491,9656595080,9611114321,9611309864,9611775070,9671952966,9651007889,9612661564,9612150370,5547654952,9616540507,9613520130,5512359634,9613188005,9613442789,9612370125,9611500499,9616540701,9616540507,9611111484];
+            $numero = $messageQueue->phone;
+            if(in_array($numero, $arrNumber)){
+                $messageQueue->lastError = "El numero se encuentra dado de baja";
+                $messageQueue->status = "ERROR";
+                $messageQueue->sentAt = date("Y-m-d H:i:s");
+                $messageQueueModel->save($messageQueue);
+                continue;
+            }
             $token = $empresaModel->select("tokenApi")->where("id", $messageQueue->idEmpresa)->first();
 
             $campaign = $campaignModel->where("id", $messageQueue->idCampaign)->first();
