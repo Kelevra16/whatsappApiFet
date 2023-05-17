@@ -331,7 +331,7 @@ class CommandsController extends BaseController
         }
 
         $commandModel = new \App\Models\CommandModel();
-
+        log_message('info','comando: '.$comando);
         $command = $commandModel->where('command',$comando)->where('idEmpresa',$idEmpresa)->first();
 
         if(!$command){

@@ -53,7 +53,7 @@ const getListLog = async (cuPage = 1) => {
 
                 currentPage = cuPage;
                 let maxPage = result.pager;
-                paginate(maxPage, ".pagination");
+                paginate(maxPage, currentPage, ".pagination");
                 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
                 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             } else {
@@ -65,6 +65,7 @@ const getListLog = async (cuPage = 1) => {
             }
         })
         .catch((error) => {
+            console.log("error", error);
             bodyTableLog.innerHTML = "";
             bodyTableLog.innerHTML = `<tr><td class="align-middle text-center" colspan="5">No hay Registros</td></tr>`;
             currentPage = 1;
@@ -111,102 +112,6 @@ function loadingTableView() {
 
         bodyTableLog.innerHTML += html;
     }
-}
-
-const paginate = (pagesMax, selector) => {
-    const currentPageLocal = currentPage;
-
-    const pages = [];
-
-    if (pagesMax <= 6) {
-        for (let i = 1; i <= pagesMax; i++) {
-            pages.push({
-                page: i,
-                current: currentPageLocal == i,
-            });
-        }
-    } else {
-        if (currentPageLocal == 1) {
-            for (let i = 1; i <= 5; i++) {
-                pages.push({
-                    page: i,
-                    current: currentPageLocal == i,
-                });
-            }
-        } else if (currentPageLocal == pagesMax) {
-            pagemin = pagesMax - 4 < 1 ? 1 : pagesMax - 4;
-            for (let i = pagemin; i <= pagesMax; i++) {
-                pages.push({
-                    page: i,
-                    current: currentPageLocal == i,
-                });
-            }
-        } else {
-            pageMint = currentPageLocal - 2 < 1 ? 1 : currentPageLocal - 2;
-            pagePlus =
-                currentPageLocal + 3 > pagesMax ? pagesMax : currentPageLocal + 3;
-            for (let i = pageMint; i <= pagePlus; i++) {
-                pages.push({
-                    page: i,
-                    current: currentPageLocal == i,
-                });
-            }
-        }
-    }
-
-    const html = `
-      <nav aria-label="Page navigation">
-          <ul class="pagination">
-              ${currentPageLocal == 1
-            ? `
-                  <li class="page-item disabled">
-                      <span class="page-link">‹</span>
-                  </li>
-              `
-            : `
-                  <li class="page-item">
-                      <a href="#" class="page-link" onclick="changePage(${currentPageLocal - 1
-            })" >‹</a>
-                  </li>
-              `
-        }
-              ${pages
-            .map(
-                (item, index) => `
-                  <li${item.current
-                        ? ' class="page-item active"'
-                        : ' class="page-item"'
-                    }>
-                      ${item.current
-                        ? `
-                          <span class="page-link">${item.page}</span>
-                      `
-                        : `
-                          <a href="#" class="page-link" onclick="changePage(${item.page})">${item.page}</a>
-                      `
-                    }
-                  </li>
-              `
-            )
-            .join("")}
-              ${currentPageLocal == pagesMax
-            ? `
-                  <li class="page-item disabled">
-                      <span class="page-link">›</span>
-                  </li>
-              `
-            : `
-                  <li class="page-item">
-                      <a href="#" class="page-link" onclick="changePage(${currentPageLocal + 1
-            })">›</a>
-                  </li>
-              `
-        }
-          </ul>
-          </nav>
-      `;
-
-    document.querySelector(selector).innerHTML = html;
 }
 
 const viewLog = (id) => {
